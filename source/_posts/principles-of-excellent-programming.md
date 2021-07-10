@@ -1,5 +1,5 @@
 ---
-title: principles of excellent programming
+title: 优秀程序设计的原则
 date: 2021-01-18 00:12:20
 tags:
 ---

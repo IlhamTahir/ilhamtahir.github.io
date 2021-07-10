@@ -1,5 +1,5 @@
 ---
-title: long parameter list
+title: 过长参数列（Long Parameter List）
 date: 2021-03-22 00:13:30
 tags:
 ---
@@ -8,9 +8,8 @@ tags:
 
 ## 症状与体征
 一个方法有三个或四个以上的参数。
-![](media/16259336630133.jpg)
 
-
+<!-- more -->
 
 ## 问题原因
 
@@ -22,9 +21,6 @@ tags:
 * Replace Parameter with Method Call(以函数取代参数)
 * Preserve Whole Object（保持对象完整）
 * Introduce Parameter Object（引入参数对象）
-
-![](media/16259336915656.jpg)
-
 
 ### Replace Parameter with Method Call(以函数取代参数)
 
