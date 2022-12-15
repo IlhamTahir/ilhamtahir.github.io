@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[程序猿依力的博客]]></title>
+  <link href="http://ilhamtahir.com/atom.xml" rel="self"/>
+  <link href="http://ilhamtahir.com/"/>
+  <updated>2022-12-15T21:49:38+08:00</updated>
+  <id>http://ilhamtahir.com/</id>
+  <author>
+    <name><![CDATA[]]></name>
+    
+  </author>
+  <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[命名最佳实践]]></title>
+    <link href="http://ilhamtahir.com/naming-best-practices.html"/>
+    <updated>2022-12-15T13:42:44+08:00</updated>
+    <id>http://ilhamtahir.com/naming-best-practices.html</id>
+    <content type="html"><![CDATA[
+<p>起一个名字实在太重要了，昨日审查代码发现团队小伙伴同样一套代码起了<code>leadSomeThing</code>，看到这个起名让我一脸懵逼😳。细问才知，他的本意<code>领取某个东西</code>。好家伙！硬生生中文造英文词。本着不放过任何问题的态度，我整理了一份关于命名的几套标准思路，希望各位造词党高抬贵手，放过那些变量和方法，给他们应有的名分吧！</p>
+<span id="more"></span><!-- more -->
+<h2><a id="%E5%A6%82%E4%BD%95%E8%B5%B7%E5%A5%BD%E7%9A%84%E5%90%8D%E5%AD%97" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>如何起好的名字</h2>
+<h3><a id="%E8%B5%B7%E7%9A%84%E5%90%8D%E5%AD%97%E6%98%AF%E6%9C%89%E6%84%8F%E4%B9%89%E7%9A%84" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>起的名字是有意义的</h3>
+<pre><code class="language-js">不要像：
+a、arr、tmp
+
+应当：
+article、courseArray、tmpFile
+</code></pre>
+<h3><a id="%E8%A6%81%E8%80%83%E8%99%91%E5%90%8D%E5%AD%97%E7%9A%84%E9%95%BF%E5%BA%A6" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>要考虑名字的长度</h3>
+<pre><code class="language-js">不要像：
+let consecutivePasswordErrorTimes
+const filedsWithUserIdAndQuestionNumAndQuestionAndHashedAnswerAndAnswerSalt
+</code></pre>
+<h3><a id="%E5%90%8D%E5%AD%97%E8%A6%81%E9%81%B5%E5%AE%88%E8%A7%84%E8%8C%83" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>名字要遵守规范</h3>
+<pre><code class="language-ts">const MAX_NUM: number = 10;                // 常量
+let newClass: number = 10;                  // 变量
+class CourseService {}              // 类名
+const getCourse = (id: number): Course =&gt; {}     // 方法
+</code></pre>
+<ul>
+<li>一个名字不要表示多种概念，一个概念不要用多种名字来表示</li>
+<li>多使用领域知识中的专有名词</li>
+</ul>
+<h2><a id="types%E5%A6%82%E4%BD%95%E5%91%BD%E5%90%8D" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>types 如何命名</h2>
+<blockquote>
+<p>重要的事情说三遍：大驼峰！大驼峰！大驼峰！</p>
+</blockquote>
+<pre><code class="language-ts">
+type User = {}
+
+interface Filter {}
+
+</code></pre>
+<h2><a id="git%E5%88%86%E6%94%AF%E5%91%BD%E5%90%8D" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>GIT 分支命名</h2>
+<ul>
+<li>BUG修复分支： bugfix/{ID}</li>
+<li>紧急修复分支： hotfix/{ID}</li>
+<li>特性功能分支： feature/{ID}-{feature_name}</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[过长参数列（Long Parameter List）]]></title>
+    <link href="http://ilhamtahir.com/long-parameter-list.html"/>
+    <updated>2022-10-13T23:51:18+08:00</updated>
+    <id>http://ilhamtahir.com/long-parameter-list.html</id>
+    <content type="html"><![CDATA[
+<h2><a id="%E7%97%87%E7%8A%B6%E4%B8%8E%E4%BD%93%E5%BE%81" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>症状与体征</h2>
+<p>一个方法有三个或四个以上的参数。</p>
+<span id="more"></span><!-- more -->
+<h2><a id="%E9%97%AE%E9%A2%98%E5%8E%9F%E5%9B%A0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>问题原因</h2>
+<p>在一个方法中运用了多种不一样的算法后有可能会导致过长参数列。也就说，过长参数列可能为了控制运行哪种算法以及如何运行而被创建。<br />
+过长参数列也有可能是为了使类之间更加独立而产生的副作用。例如，用于创建方法中所需的特定对象的代码已从该方法移至用于调用该方法的代码，但是创建的对象作为参数传递给该方法。因此，原始类不再了解对象之间的关系，并且依赖性降低了。但是，如果创建了这些对象中的几个，则每个对象都将需要自己的参数，这意味着需要更长的参数列表。</p>
+<h2><a id="%E7%96%97%E6%B3%95" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>疗法</h2>
+<ul>
+<li>Replace Parameter with Method Call(以函数取代参数)</li>
+<li>Preserve Whole Object（保持对象完整）</li>
+<li>Introduce Parameter Object（引入参数对象）</li>
+</ul>
+<h3><a id="replace-parameter-with-method-call%E4%BB%A5%E5%87%BD%E6%95%B0%E5%8F%96%E4%BB%A3%E5%8F%82%E6%95%B0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Replace Parameter with Method Call(以函数取代参数)</h3>
+<h4><a id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>解决思路</h4>
+<p>将参数在目标方法内部获取，以便减少当前方法参数数量</p>
+<p>不好的示例</p>
+<pre><code class="language-php">$basePrice = $this-&gt;quantity * $this-&gt;itemPrice;
+$seasonDiscount = $this-&gt;getSeasonalDiscount();
+$fees = $this-&gt;getFees();
+$finalPrice = $this-&gt;discountedPrice($basePrice, $seasonDiscount, $fees);
+</code></pre>
+<p>好的示例</p>
+<pre><code class="language-php">$basePrice = $this-&gt;quantity * $this-&gt;itemPrice;
+$finalPrice = $this-&gt;discountedPrice($basePrice);
+</code></pre>
+<h4><a id="%E9%87%8D%E6%9E%84%E6%AD%A5%E9%AA%A4" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>重构步骤</h4>
+<ol>
+<li>如果有必要，将参数的计算过程提炼到独立函数中</li>
+<li>将函数本体内引用该参数的地方改为调用新建的函数</li>
+<li>每次替换后，修改并测试</li>
+<li>全部替换完成后，使用<code>Remove Parameter</code> 将该参数去掉</li>
+</ol>
+<h4><a id="%E7%A4%BA%E4%BE%8B" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>示例</h4>
+<pre><code class="language-javascript">// edusoho/on-line-course/pages/task/taskStudent.js 202~210
+
+    const menuData = functionButtomMenuData({
+      role: data.taskData.role,
+      courseId,
+      lessonId,
+      ingLessonId: data.study.lessonId,
+      lessonStatus: data.study.lessonStatus,
+      up: data.taskData.up,
+      next: data.taskData.next,
+    });
+</code></pre>
+<h3><a id="replace-parameter-with-method-call%E4%BB%A5%E6%98%8E%E7%A1%AE%E5%87%BD%E6%95%B0%E5%8F%96%E4%BB%A3%E5%8F%82%E6%95%B0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Replace Parameter with Method Call(以明确函数取代参数)</h3>
+<pre><code class="language-php">// src/Biz/Activity/Service/Impl/ActivityServiceImpl.php 243
+
+protected function syncActivityMaterials($activity, $materials, $mode = 'create')
+
+</code></pre>
+<h4><a id="%E9%87%8D%E6%9E%84%E6%AD%A5%E9%AA%A4" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>重构步骤</h4>
+<ol>
+<li>针对每个可能值，新建明确地函数</li>
+<li>修改每个调用分支，使其合适新的函数</li>
+<li>测试修复</li>
+<li>完毕后删除原函数</li>
+</ol>
+<h3><a id="introduce-parameter-object%EF%BC%88%E5%BC%95%E5%85%A5%E5%8F%82%E6%95%B0%E5%AF%B9%E8%B1%A1%EF%BC%89" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduce Parameter Object（引入参数对象）</h3>
+<pre><code class="language-javascript">
+// edusoho/pages/binding/binding.js 158
+
+      userController('loginUser', password,identify,openId ).success(data=&gt; {
+      
+      
+
+
+</code></pre>
+<p><a href="http://coding.codeages.work/edusoho/edusoho/-/blob/release/8.1.10/src/Biz/User/Service/Impl/UserServiceImpl.php">PHP示例</a></p>
+<p><a href="https://wiki.codeages.work/pages/viewpage.action?pageId=17204601">https://wiki.codeages.work/pages/viewpage.action?pageId=17204601</a></p>
+<h4><a id="%E9%87%8D%E6%9E%84%E6%AD%A5%E9%AA%A4" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>重构步骤</h4>
+<p>多个相关参数，可以考虑封装为对象传递。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[优秀程序设计的原则]]></title>
+    <link href="http://ilhamtahir.com/principles-of-excellent-programming.html"/>
+    <updated>2022-10-13T23:46:04+08:00</updated>
+    <id>http://ilhamtahir.com/principles-of-excellent-programming.html</id>
+    <content type="html"><![CDATA[
+<p>好的编程原则跟好的系统设计原则和技术实施原则有着密切的联系。下面的这些编程原则在过去的这些年里让我成为了一名优秀的程序员，我相信，这些原则对任何一个开发人员来说，都能让他的编程能力大幅度的提高，能让他开发出可维护性更强、缺陷更少的程序。</p>
+<span id="more"></span><!-- more -->
+<h2><a id="%E4%B8%8D%E8%A6%81%E8%87%AA%E6%88%91%E9%87%8D%E5%A4%8Ddry-don-t-repeat-yourself" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>不要自我重复(DRY - Don't repeat yourself)</strong></h2>
+<p>这也许是在编程开发这最最基本的一个信条，就是要告诉你不要出现重复的代码。我们很多的编程结构之所以存在，就是为了帮助我们消除重复(例如，循环语句，函数，类，等等)。一旦程序里开始有重复现象的出现(例如很长的表达式、一大堆的语句，但都是为了表达相同的概念)，你就需要对代码进行一次新的提炼，抽象。</p>
+<h2><a id="%E6%8F%90%E7%82%BC%E5%8E%9F%E5%88%99abstraction-principle" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>提炼原则(Abstraction Principle)</strong></h2>
+<p>跟“不要自我重复原则”相关，这一原则是说“程序中任何一段具有功能性的代码在源代码文件中应该唯一的存在。”</p>
+<h2><a id="%E4%BF%9D%E6%8C%81%E7%AE%80%E5%8D%95kiss-keep-it-simple-stupid" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>保持简单(KISS - Keep it simple, stupid!)</strong></h2>
+<p>简单化(避免复杂)永远都应该是你的头等目标。简单的程序让你写起来容易，产生的bug更少，更容易维护修改。</p>
+<h2><a id="%E4%B8%8D%E8%A6%81%E5%BC%80%E5%8F%91%E4%BD%A0%E7%9B%AE%E5%89%8D%E7%94%A8%E4%B8%8D%E5%88%B0%E7%9A%84%E5%8A%9F%E8%83%BDavoid-creating-a-yagni-you-aren-t-going-to-need-it" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>不要开发你目前用不到的功能(Avoid Creating a YAGNI - You aren't going to need it)</strong></h2>
+<p>除非你真正需要用到它，否则不要轻易加上那些乱七八糟用不到的功能。</p>
+<h2><a id="%E7%94%A8%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E6%96%B9%E6%B3%95%E8%AE%A9%E7%A8%8B%E5%BA%8F%E8%B7%91%E8%B5%B7%E6%9D%A5do-the-simplest-thing-that-could-possibly-work" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>用最简单的方法让程序跑起来(Do the simplest thing that could possibly work)</strong></h2>
+<p>在开发时有个非常好的问题你需要问问自己，“怎样才能最简单的让程序跑起来？”这能帮助我们在设计时让程序保持简单。</p>
+<h2><a id="%E4%B8%8D%E8%A6%81%E8%AE%A9%E6%88%91%E5%8A%A8%E8%84%91%E5%AD%90don-t-make-me-think" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>不要让我动脑子(Don't make me think)</strong></h2>
+<p>这实际上是Steve Krug 关于web界面操作的一本书的书名，但也适用于编程。主旨是，程序代码应该让人们花最小的努力就能读懂和理解。如果一段程序对于阅读者来说需要花费太多的努力才能理解，那它很可能需要进一步简化。</p>
+<h2><a id="%E5%BC%80%E6%94%BE%E5%B0%81%E9%97%AD%E5%8E%9F%E5%88%99openclosed-principle" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>开放/封闭原则(Open/Closed Principle)</strong></h2>
+<p>程序里的实体项(类，模块，函数等)应该对扩展行为开放，对修改行为关闭。换句话说，不要写允许别人修改的类，应该写能让人们扩展的类</p>
+<h2><a id="%E4%B8%BA%E7%BB%B4%E6%8A%A4%E8%80%85%E5%86%99%E7%A8%8B%E5%BA%8Fwrite-code-for-the-maintainer" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>为维护者写程序(Write Code for the Maintainer)</strong></h2>
+<p>任何值得你编写的程序在将来都是值得你去维护的，也许由你维护，也许由他人。在将来，当你不得不维护这些程序时，你对这些代码的记忆会基本上跟一个陌生人一样，所以，你最好还是当成一直在给别人写程序。一个有助于你记住这个原则的办法是“写程序时时刻记着，这个将来要维护你写的程序的人是一个有严重暴力倾向，并且知道你住在哪里的精神变态者”。</p>
+<h2><a id="%E6%9C%80%E5%B0%91%E6%84%8F%E5%A4%96%E5%8E%9F%E5%88%99principle-of-least-astonishment" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>最少意外原则(Principle of least astonishment)</strong></h2>
+<p>最少意外原则通常是使用在用户界面设计上，但这个原则同样适用于编写程序。程序代码应尽可能的不要让阅读者感到意外。也就是说应该遵循编码规范和常见习惯，按照公认的习惯方式进行组织和命名，不符常规的编程动作应该尽可能的避免。</p>
+<h2><a id="%E5%8D%95%E4%B8%80%E8%81%8C%E8%B4%A3%E5%8E%9F%E5%88%99single-responsibility-principle" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>单一职责原则(Single Responsibility Principle)</strong></h2>
+<p>一个代码组件(例如类或函数)应该只执行单一的预设的任务。</p>
+<h2><a id="%E6%9C%80%E5%B0%8F%E5%8C%96%E8%80%A6%E5%90%88%E5%85%B3%E7%B3%BBminimize-coupling" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>最小化耦合关系(Minimize Coupling)</strong></h2>
+<p>一个代码片段(代码块，函数，类等)应该最小化它对其它代码的依赖。这个目标通过尽可能少的使用共享变量来实现。“低耦合是一个计算机系统结构合理、设计优秀的标志，把它与高聚合特征联合起来，会对可读性和可维护性等重要目标的实现具有重要的意义。”</p>
+<h2><a id="%E6%9C%80%E5%A4%A7%E5%8C%96%E5%86%85%E8%81%9A%E6%80%A7maximize-cohesion" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>最大化内聚性(Maximize Cohesion)</strong></h2>
+<p>具有相似功能的代码应该放在同一个代码组件里。</p>
+<h2><a id="%E9%9A%90%E8%97%8F%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82hide-implementation-details" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>隐藏实现细节(Hide Implementation Details)</strong></h2>
+<p>隐藏实现细节能最小化你在修改程序组件时产生的对那些使用这个组件的其它程序模块的影响。</p>
+<h2><a id="%E7%AC%9B%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99law-of-demeter" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>笛米特法则(Law of Demeter)</strong></h2>
+<p>程序组件应该只跟它的直系亲属有关系(例如继承类，内包含的对象，通过参数入口传入的对象等。)</p>
+<h2><a id="%E9%81%BF%E5%85%8D%E8%BF%87%E6%97%A9%E4%BC%98%E5%8C%96avoid-premature-optimization" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>避免过早优化(Avoid Premature Optimization)</strong></h2>
+<p>只有当你的程序没有其它问题，只是比你预期的要慢时，你才能去考虑优化工作。只有当其它工作都做完后，你才能考虑优化问题，而且你只应该依据经验做法来优化。“对于小幅度的性能改进都不该考虑，要优化就应该是97%的性能提升：过早优化是一切罪恶的根源”—Donald Knuth。</p>
+<h2><a id="%E4%BB%A3%E7%A0%81%E5%A4%8D%E7%94%A8code-reuse-is-good" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>代码复用(Code Reuse is Good)</strong></h2>
+<p>这不是非常核心的原则，但它跟其它原则一样非常有价值。代码复用能提高程序的可靠性，节省你的开发时间。</p>
+<h2><a id="%E8%81%8C%E8%B4%A3%E5%88%86%E7%A6%BBseparation-of-concerns" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>职责分离(Separation of Concerns)</strong></h2>
+<p>不同领域的功能应该由完全不同的代码模块来管理，尽量减少这样的模块之间的重叠。</p>
+<h2><a id="%E6%8B%A5%E6%8A%B1%E5%8F%98%E5%8C%96embrace-change" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>拥抱变化(Embrace Change)</strong></h2>
+<p>这是Kent Beck的一本书的副标题，它也是极限编程和敏捷开发方法的基本信条之一。很多的其它原则都基于此观念：面对变化，欢迎变化。事实上，一些经典的软件工程原则，例如最小化耦合，就是为了让程序更容易面对变化。不论你是否采用了极限编程方法，这个原则对你的程序开发都有重要意义。</p>
+<p><a href="https://www.artima.com/weblogs/viewpost.jsp?thread=331531">文章原文</a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[利用小程序第三方自定义组件能力开发文档播放器组件]]></title>
+    <link href="http://ilhamtahir.com/how-to-create-mp-third-party-ppt-player-component.html"/>
+    <updated>2022-10-13T23:52:33+08:00</updated>
+    <id>http://ilhamtahir.com/how-to-create-mp-third-party-ppt-player-component.html</id>
+    <content type="html"><![CDATA[
+<h2><a id="%E8%B5%B7%E5%9B%A0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>起因</h2>
+<p>前段时间，承担公司内部智慧课堂小程序项目的技术leader。客户方由于是出版社，对于图书资源播放有高度定制要求，鉴于公司本身文档播放器未能提供原生小程序SDK，我利用小程序第三方自定义组件能力去开发了一个简单的文档播放器组件。</p>
+<span id="more"></span><!-- more -->
+<h2><a id="%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>准备工作</h2>
+<p>安装小程序第三方命令行工具, 官方提供了命令行工具，用于快速初始化一个项目。执行如下安装命令：</p>
+<pre><code class="language-plain_text">npm install -g @wechat-miniprogram/miniprogram-cli
+</code></pre>
+<p>创建一个空目录，在目录中执行初始化第三方自定义组件示例项目命令。</p>
+<pre><code class="language-plain_text"># 创建空目录
+mkdir document-player-miniprogram
+
+# 进入目录
+cd document-player-miniprogram
+
+# 初始化示例项目
+miniprogram init --type custom-component
+</code></pre>
+<h2><a id="%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>目录结构</h2>
+<p>以下为文档播放器目录结构:</p>
+<pre><code class="language-plain_text">|--miniprogram_dev // 开发环境构建目录
+|--miniprogram_dist // 生产环境构建目录
+|--src // 源码
+|   |--assets // 静态资源
+|   |--aes-decrypter.js // AES解密器
+|   |--index(.wxml,.wxss,.ts,.json) // 播放器组件
+|   |--scale-image(.wxml,.wxss,.ts,.json) // 单个图片缩放器组件
+|   |--types.ts // 接口类
+|--test // 测试用例
+|--tools // 构建相关代码
+|   |--demo // demo 小程序目录，开发环境下会被拷贝生成到 miniprogram_dev 目录中
+|   |--config.js // 构建相关配置文件
+|
+|--gulpfile.js
+</code></pre>
+<h2><a id="%E5%BC%80%E5%8F%91" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>开发</h2>
+<p>根据官方文档，安装依赖</p>
+<pre><code class="language-plain_text">npm install
+</code></pre>
+<p>启动监听</p>
+<pre><code class="language-plain_text">npm run watch
+</code></pre>
+<p>接下来我们就可以正式进入开发自己的自定义组件了。</p>
+<h2><a id="%E7%9B%B8%E5%85%B3%E7%89%B9%E6%80%A7" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>相关特性</h2>
+<h3><a id="%E6%92%AD%E6%94%BE%E7%B1%BB%E5%9E%8B%E9%80%89%E6%8B%A9" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>播放类型选择</h3>
+<p>根据传入参数imageData的长度是否存在来判断播放器加载图片的模式：</p>
+<pre><code class="language-plain_text">      if (this.properties.imageData.length) {
+        this._initNoEncryptData()
+      } else {
+        this._initEncryptData()
+      }
+</code></pre>
+<h3><a id="%E9%9D%9E%E5%8A%A0%E5%AF%86%E6%92%AD%E6%94%BE" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>非加密播放</h3>
+<p>非加密播放时采用imageData数据构造imageList数据，并传入isEncrypted：false</p>
+<pre><code class="language-plain_text">      const list = []
+      for (let i = 0; i &lt; this.properties.imageData.length; i++) {
+        const img = {
+          src: this.properties.imageData[i],
+          page: (i + 1),
+          active: false,
+          load: false
+        } as ImgItem
+        list.push(img)
+      }
+      this.setData({
+        imageList: list,
+        isEncrypted: false
+      })
+</code></pre>
+<h3><a id="%E5%8A%A0%E5%AF%86%E6%92%AD%E6%94%BE" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>加密播放</h3>
+<p>加密播放时，imageUrlPrefix参数生效，并构造imageList，传入isEncrypted：true</p>
+<pre><code class="language-plain_text">      this.setData({
+        imageList: list,
+        isEncrypted: true
+      })
+</code></pre>
+<h3><a id="%E5%8A%A0%E8%BD%BD%E5%9B%BE%E7%89%87" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>加载图片</h3>
+<p>调用goto方法，传入加载page</p>
+<pre><code class="language-plain_text">      this.goto({page: 1})
+
+</code></pre>
+<p>根据load参数判断图片是否预加载完成</p>
+<pre><code class="language-plain_text">        if (!newActiveImg.load) {
+          this._loadImage(newActiveImg)
+        }
+</code></pre>
+<p>由于图片资源加载需要过程，前端未加载图片暂时有了一个placehold图片。</p>
+<pre><code class="language-plain_text">        &lt;scale-image ... src=&quot;{{ item.load ? item.base64 : './assets/loading.gif' }}&quot; ... &gt;&lt;/scale-image&gt;
+</code></pre>
+<p>根据图片资源先调用wx.request 方式预加载图片内容</p>
+<pre><code class="language-plain_text">      wx.request({
+        url: image.src,
+        responseType: 'arraybuffer',
+        success: result =&gt; {
+        ...
+        }
+</code></pre>
+<p>加密模式，采用加密算法解密图片内容并转换base64</p>
+<pre><code class="language-plain_text">          if (that.data.isEncrypted) {
+            const key = that._str2uint32(this.properties.encryptKey)
+            const iv = that._str2uint32(this.properties.encryptIv)
+            const readerBuffer = new Uint8Array(data)
+            // eslint-disable-next-line handle-callback-err,no-new
+            new Decrypter(readerBuffer, key, iv, (err, decryptedArray) =&gt; {
+              image.base64 = 'data:image/png;base64,' + wx.arrayBufferToBase64(decryptedArray.buffer)
+              image.load = true
+              const currentIndex = image.page - 1
+              that.setData({
+                ['imageList[' + currentIndex + ']']: image,
+              })
+            })
+          } 
+</code></pre>
+<p>非加密模式，内容函数直接转换base64</p>
+<pre><code class="language-plain_text">            image.base64 = 'data:image/png;base64,' + wx.arrayBufferToBase64(data)
+            image.load = true
+            const currentIndex = image.page - 1
+            that.setData({
+              ['imageList[' + currentIndex + ']']: image,
+            })
+</code></pre>
+<h2><a id="%E5%8F%91%E5%B8%83%E7%BB%84%E4%BB%B6" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>发布组件</h2>
+<p>生成build内容</p>
+<pre><code class="language-plain_text">npm run build
+</code></pre>
+<p>设置版本号</p>
+<pre><code class="language-plain_text">package.json
+{
+  &quot;name&quot;: &quot;document-player-miniprogram&quot;,
+  &quot;version&quot;: &quot;1.3.7&quot;, // 修改
+  &quot;description&quot;: &quot;&quot;,
+  &quot;main&quot;: &quot;miniprogram_dist/index.js&quot;,
+</code></pre>
+<p>执行发布脚本</p>
+<pre><code class="language-plain_text">npm run publish-to-npm
+</code></pre>
+<h2><a id="%E5%9C%A8%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%BB%93%E5%BA%93%E4%B8%AD%E8%B0%83%E7%94%A8" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>在小程序仓库中调用</h2>
+<p>升级安装npm包</p>
+<pre><code class="language-plain_text">npm install document-player-miniprogram --registry  https://registry.npmjs.org/
+
+</code></pre>
+<p>构建npm即可</p>
+
+]]></content>
+  </entry>
+  
+</feed>

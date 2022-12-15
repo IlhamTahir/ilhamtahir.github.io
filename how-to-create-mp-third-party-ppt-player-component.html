@@ -1,0 +1,620 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+    
+  利用小程序第三方自定义组件能力开发文档播放器组件 - 程序猿依力的博客
+  
+  </title>
+  
+  
+  <link href="atom.xml" rel="alternate" title="程序猿依力的博客" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/foundation.min.css" />
+    <link rel="stylesheet" href="asset/css/docs.css" />
+    <script src="asset/js/vendor/modernizr.js"></script>
+    <script src="asset/js/vendor/jquery.js"></script>
+ 
+<script type="text/javascript">
+  function before_search(){
+    var searchVal = 'site:ilhamtahir.com ' + document.getElementById('search_input').value;
+    document.getElementById('search_q').value = searchVal;
+    return true;
+  }
+</script>
+  </head>
+  <body class="antialiased hide-extras">
+    
+    <div class="marketing off-canvas-wrap" data-offcanvas>
+      <div class="inner-wrap">
+
+
+<nav class="top-bar docs-bar hide-for-small" data-topbar>
+
+
+  <section class="top-bar-section">
+  <div class="row">
+      <div style="position: relative;width:100%;"><div style="position: absolute; width:100%;">
+        <ul id="main-menu" class="left">
+        
+        <li id=""><a target="_self" href="index.html">首页</a></li>
+        
+        <li id=""><a target="_self" href="archives.html">归档</a></li>
+        
+        </ul>
+
+        <ul class="right" id="search-wrap">
+          <li>
+<form target="_blank" onsubmit="return before_search();" action="https://google.com/search" method="get">
+    <input type="hidden" id="search_q" name="q" value="" />
+    <input tabindex="1" type="search" id="search_input"  placeholder="Search"/>
+</form>
+</li>
+          </ul>
+      </div></div>
+  </div>
+  </section>
+
+</nav>
+
+        <nav class="tab-bar show-for-small">
+  <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
+    <span> &nbsp; 程序猿依力的博客</span>
+  </a>
+</nav>
+
+<aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        
+        <li><a target="_self" href="index.html">首页</a></li>
+        
+        <li><a target="_self" href="archives.html">归档</a></li>
+        
+
+    <li><label>Categories</label></li>
+
+         
+
+      </ul>
+    </aside>
+
+<a class="exit-off-canvas" href="#"></a>
+
+
+        <section id="main-content" role="main" class="scroll-container">
+        
+       
+
+ <script type="text/javascript">
+  $(function(){
+    $('#menu_item_index').addClass('is_active');
+  });
+</script>
+<div class="row">
+  <div class="large-8 medium-8 columns">
+      <div class="markdown-body article-wrap">
+       <div class="article">
+          
+          <h1>利用小程序第三方自定义组件能力开发文档播放器组件</h1>
+     
+        <div class="read-more clearfix">
+          <span class="date">2021/01/06 23:52 下午</span>
+
+          
+           
+         
+          <span class="comments">
+            
+
+            
+          </span>
+
+        </div>
+      </div><!-- article -->
+
+      <div class="article-content">
+      <h2><a id="%E8%B5%B7%E5%9B%A0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>起因</h2>
+<p>前段时间，承担公司内部智慧课堂小程序项目的技术leader。客户方由于是出版社，对于图书资源播放有高度定制要求，鉴于公司本身文档播放器未能提供原生小程序SDK，我利用小程序第三方自定义组件能力去开发了一个简单的文档播放器组件。</p>
+<span id="more"></span><!-- more -->
+<h2><a id="%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>准备工作</h2>
+<p>安装小程序第三方命令行工具, 官方提供了命令行工具，用于快速初始化一个项目。执行如下安装命令：</p>
+<pre><code class="language-plain_text">npm install -g @wechat-miniprogram/miniprogram-cli
+</code></pre>
+<p>创建一个空目录，在目录中执行初始化第三方自定义组件示例项目命令。</p>
+<pre><code class="language-plain_text"># 创建空目录
+mkdir document-player-miniprogram
+
+# 进入目录
+cd document-player-miniprogram
+
+# 初始化示例项目
+miniprogram init --type custom-component
+</code></pre>
+<h2><a id="%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>目录结构</h2>
+<p>以下为文档播放器目录结构:</p>
+<pre><code class="language-plain_text">|--miniprogram_dev // 开发环境构建目录
+|--miniprogram_dist // 生产环境构建目录
+|--src // 源码
+|   |--assets // 静态资源
+|   |--aes-decrypter.js // AES解密器
+|   |--index(.wxml,.wxss,.ts,.json) // 播放器组件
+|   |--scale-image(.wxml,.wxss,.ts,.json) // 单个图片缩放器组件
+|   |--types.ts // 接口类
+|--test // 测试用例
+|--tools // 构建相关代码
+|   |--demo // demo 小程序目录，开发环境下会被拷贝生成到 miniprogram_dev 目录中
+|   |--config.js // 构建相关配置文件
+|
+|--gulpfile.js
+</code></pre>
+<h2><a id="%E5%BC%80%E5%8F%91" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>开发</h2>
+<p>根据官方文档，安装依赖</p>
+<pre><code class="language-plain_text">npm install
+</code></pre>
+<p>启动监听</p>
+<pre><code class="language-plain_text">npm run watch
+</code></pre>
+<p>接下来我们就可以正式进入开发自己的自定义组件了。</p>
+<h2><a id="%E7%9B%B8%E5%85%B3%E7%89%B9%E6%80%A7" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>相关特性</h2>
+<h3><a id="%E6%92%AD%E6%94%BE%E7%B1%BB%E5%9E%8B%E9%80%89%E6%8B%A9" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>播放类型选择</h3>
+<p>根据传入参数imageData的长度是否存在来判断播放器加载图片的模式：</p>
+<pre><code class="language-plain_text">      if (this.properties.imageData.length) {
+        this._initNoEncryptData()
+      } else {
+        this._initEncryptData()
+      }
+</code></pre>
+<h3><a id="%E9%9D%9E%E5%8A%A0%E5%AF%86%E6%92%AD%E6%94%BE" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>非加密播放</h3>
+<p>非加密播放时采用imageData数据构造imageList数据，并传入isEncrypted：false</p>
+<pre><code class="language-plain_text">      const list = []
+      for (let i = 0; i &lt; this.properties.imageData.length; i++) {
+        const img = {
+          src: this.properties.imageData[i],
+          page: (i + 1),
+          active: false,
+          load: false
+        } as ImgItem
+        list.push(img)
+      }
+      this.setData({
+        imageList: list,
+        isEncrypted: false
+      })
+</code></pre>
+<h3><a id="%E5%8A%A0%E5%AF%86%E6%92%AD%E6%94%BE" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>加密播放</h3>
+<p>加密播放时，imageUrlPrefix参数生效，并构造imageList，传入isEncrypted：true</p>
+<pre><code class="language-plain_text">      this.setData({
+        imageList: list,
+        isEncrypted: true
+      })
+</code></pre>
+<h3><a id="%E5%8A%A0%E8%BD%BD%E5%9B%BE%E7%89%87" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>加载图片</h3>
+<p>调用goto方法，传入加载page</p>
+<pre><code class="language-plain_text">      this.goto({page: 1})
+
+</code></pre>
+<p>根据load参数判断图片是否预加载完成</p>
+<pre><code class="language-plain_text">        if (!newActiveImg.load) {
+          this._loadImage(newActiveImg)
+        }
+</code></pre>
+<p>由于图片资源加载需要过程，前端未加载图片暂时有了一个placehold图片。</p>
+<pre><code class="language-plain_text">        &lt;scale-image ... src=&quot;{{ item.load ? item.base64 : './assets/loading.gif' }}&quot; ... &gt;&lt;/scale-image&gt;
+</code></pre>
+<p>根据图片资源先调用wx.request 方式预加载图片内容</p>
+<pre><code class="language-plain_text">      wx.request({
+        url: image.src,
+        responseType: 'arraybuffer',
+        success: result =&gt; {
+        ...
+        }
+</code></pre>
+<p>加密模式，采用加密算法解密图片内容并转换base64</p>
+<pre><code class="language-plain_text">          if (that.data.isEncrypted) {
+            const key = that._str2uint32(this.properties.encryptKey)
+            const iv = that._str2uint32(this.properties.encryptIv)
+            const readerBuffer = new Uint8Array(data)
+            // eslint-disable-next-line handle-callback-err,no-new
+            new Decrypter(readerBuffer, key, iv, (err, decryptedArray) =&gt; {
+              image.base64 = 'data:image/png;base64,' + wx.arrayBufferToBase64(decryptedArray.buffer)
+              image.load = true
+              const currentIndex = image.page - 1
+              that.setData({
+                ['imageList[' + currentIndex + ']']: image,
+              })
+            })
+          } 
+</code></pre>
+<p>非加密模式，内容函数直接转换base64</p>
+<pre><code class="language-plain_text">            image.base64 = 'data:image/png;base64,' + wx.arrayBufferToBase64(data)
+            image.load = true
+            const currentIndex = image.page - 1
+            that.setData({
+              ['imageList[' + currentIndex + ']']: image,
+            })
+</code></pre>
+<h2><a id="%E5%8F%91%E5%B8%83%E7%BB%84%E4%BB%B6" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>发布组件</h2>
+<p>生成build内容</p>
+<pre><code class="language-plain_text">npm run build
+</code></pre>
+<p>设置版本号</p>
+<pre><code class="language-plain_text">package.json
+{
+  &quot;name&quot;: &quot;document-player-miniprogram&quot;,
+  &quot;version&quot;: &quot;1.3.7&quot;, // 修改
+  &quot;description&quot;: &quot;&quot;,
+  &quot;main&quot;: &quot;miniprogram_dist/index.js&quot;,
+</code></pre>
+<p>执行发布脚本</p>
+<pre><code class="language-plain_text">npm run publish-to-npm
+</code></pre>
+<h2><a id="%E5%9C%A8%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%BB%93%E5%BA%93%E4%B8%AD%E8%B0%83%E7%94%A8" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>在小程序仓库中调用</h2>
+<p>升级安装npm包</p>
+<pre><code class="language-plain_text">npm install document-player-miniprogram --registry  https://registry.npmjs.org/
+
+</code></pre>
+<p>构建npm即可</p>
+
+
+    
+
+      </div>
+
+      <div class="row">
+        <div class="large-6 columns">
+        <p class="text-left" style="padding:15px 0px;">
+      
+          <a href="principles-of-excellent-programming.html" 
+          title="Previous Post: 优秀程序设计的原则">&laquo; 优秀程序设计的原则</a>
+      
+        </p>
+        </div>
+        <div class="large-6 columns">
+      <p class="text-right" style="padding:15px 0px;">
+      
+      </p>
+        </div>
+      </div>
+      <div class="comments-wrap">
+        <div class="share-comments">
+          
+
+          
+
+          
+        </div>
+      </div>
+    </div><!-- article-wrap -->
+  </div><!-- large 8 -->
+
+
+
+
+ <div class="large-4 medium-4 columns">
+  <div class="hide-for-small">
+    <div id="sidebar" class="sidebar">
+          <div id="site-info" class="site-info">
+            
+                <div class="site-a-logo"><img src="media/16710829640172/IMG_2369.JPG" /></div>
+            
+                <h1>程序猿依力的博客</h1>
+                <div class="site-des">浙大老学长、一个乐于分享好内容的博主</div>
+                <div class="social">
+
+
+
+
+
+
+
+
+
+<a target="_blank" class="github" target="_blank" href="https://github.com/IlhamTahir" title="GitHub">GitHub</a>
+<a target="_blank" class="email" href="mailto:aesoft@qq.com" title="Email">Email</a>
+  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
+                
+              	 </div>
+          	</div>
+
+             
+
+              <div id="site-categories" class="side-item ">
+                <div class="side-header">
+                  <h2>Categories</h2>
+                </div>
+                <div class="side-content">
+
+      	<p class="cat-list">
+         
+        </p>
+
+
+                </div>
+              </div>
+
+              <div id="site-categories" class="side-item">
+                <div class="side-header">
+                  <h2>Recent Posts</h2>
+                </div>
+                <div class="side-content">
+                <ul class="posts-list">
+	      
+		      
+			      <li class="post">
+			        <a href="naming-best-practices.html">命名最佳实践</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="long-parameter-list.html">过长参数列（Long Parameter List）</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="principles-of-excellent-programming.html">优秀程序设计的原则</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="how-to-create-mp-third-party-ppt-player-component.html">利用小程序第三方自定义组件能力开发文档播放器组件</a>
+			      </li>
+		     
+		   
+		  		</ul>
+                </div>
+              </div>
+        </div><!-- sidebar -->
+      </div><!-- hide for small -->
+</div><!-- large 4 -->
+
+</div><!-- row -->
+
+ <div class="page-bottom clearfix">
+  <div class="row">
+   <p class="copyright">Copyright &copy; 2015
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a>,&nbsp; 
+Theme used <a target="_blank" href="http://github.com">GitHub CSS</a>.</p>
+  </div>
+</div>
+
+        </section>
+      </div>
+    </div>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="asset/prism.js"></script>
+
+
+<style type="text/css">
+figure{margin: 0;padding: 0;}
+figcaption{text-align:center;}
+
+/* PrismJS 1.14.0
+ http://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript */
+/**
+ * prism.js default theme for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Lea Verou
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+    color: black;
+    background: none;
+    text-shadow: 0 1px white;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+    
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+    text-shadow: none;
+    background:#b3d4fc;
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+    text-shadow: none;
+    background: #b3d4fc;
+}
+
+@media print {
+    code[class*="language-"],
+    pre[class*="language-"] {
+        text-shadow: none;
+    }
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+    padding: 1em;
+    margin: .5em 0;
+    overflow: auto;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+    background: #F7F7F7;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+    padding: .1em;
+    border-radius: .3em;
+    white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: slategray;
+}
+
+.token.punctuation {
+    color: #999;
+}
+
+.namespace {
+    opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+    color: #905;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: #690;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+    color: #9a6e3a;
+    background: hsla(0, 0%, 100%, .5);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+    color: #07a;
+}
+
+.token.function,
+.token.class-name {
+    color: #DD4A68;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+    color: #e90;
+}
+
+.token.important,
+.token.bold {
+    font-weight: bold;
+}
+.token.italic {
+    font-style: italic;
+}
+
+.token.entity {
+    cursor: help;
+}
+
+
+pre[class*="language-"].line-numbers {
+    position: relative;
+    padding-left: 3.8em;
+    counter-reset: linenumber;
+}
+
+pre[class*="language-"].line-numbers > code {
+    position: relative;
+    white-space: inherit;
+}
+
+.line-numbers .line-numbers-rows {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    font-size: 100%;
+    left: -3.8em;
+    width: 3em; /* works for line-numbers below 1000 lines */
+    letter-spacing: -1px;
+    border-right: 1px solid #999;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+}
+
+    .line-numbers-rows > span {
+        pointer-events: none;
+        display: block;
+        counter-increment: linenumber;
+    }
+
+        .line-numbers-rows > span:before {
+            content: counter(linenumber);
+            color: #999;
+            display: block;
+            padding-right: 0.8em;
+            text-align: right;
+        }
+
+</style>
+
+  
+    
+
+    <script src="asset/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      function fixSidebarHeight(){
+        var w1 = $('.markdown-body').height();
+          var w2 = $('#sidebar').height();
+          if (w1 > w2) { $('#sidebar').height(w1); };
+      }
+      $(function(){
+        fixSidebarHeight();
+      })
+      $(window).load(function(){
+          fixSidebarHeight();
+      });
+     
+    </script>
+
+
+
+  </body>
+</html>
