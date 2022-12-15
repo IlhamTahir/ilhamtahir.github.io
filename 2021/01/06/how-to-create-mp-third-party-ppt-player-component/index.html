@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.ilhamtahir.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.8.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="利用小程序第三方自定义组件能力开发文档播放器组件起因前段时间，承担公司内部智慧课堂小程序项目的技术leader。客户方由于是出版社，对于图书资源播放有高度定制要求，鉴于公司本身文档播放器未能提供原生小程序SDK，我利用小程序第三方自定义组件能力去开发了一个简单的文档播放器组件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用小程序第三方自定义组件能力开发文档播放器组件">
+<meta property="og:url" content="https://www.ilhamtahir.com/2021/01/06/how-to-create-mp-third-party-ppt-player-component/index.html">
+<meta property="og:site_name" content="IlhamTahir&#39;s Blog">
+<meta property="og:description" content="利用小程序第三方自定义组件能力开发文档播放器组件起因前段时间，承担公司内部智慧课堂小程序项目的技术leader。客户方由于是出版社，对于图书资源播放有高度定制要求，鉴于公司本身文档播放器未能提供原生小程序SDK，我利用小程序第三方自定义组件能力去开发了一个简单的文档播放器组件。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-06T00:06:35.000Z">
+<meta property="article:modified_time" content="2022-12-15T13:55:44.975Z">
+<meta property="article:author" content="Ilham Tahir">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://www.ilhamtahir.com/2021/01/06/how-to-create-mp-third-party-ppt-player-component/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.ilhamtahir.com/2021/01/06/how-to-create-mp-third-party-ppt-player-component/","path":"2021/01/06/how-to-create-mp-third-party-ppt-player-component/","title":"利用小程序第三方自定义组件能力开发文档播放器组件"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>利用小程序第三方自定义组件能力开发文档播放器组件 | IlhamTahir's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">IlhamTahir's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%AC%AC%E4%B8%89%E6%96%B9%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E8%83%BD%E5%8A%9B%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3%E6%92%AD%E6%94%BE%E5%99%A8%E7%BB%84%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">利用小程序第三方自定义组件能力开发文档播放器组件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%B7%E5%9B%A0"><span class="nav-number">1.1.</span> <span class="nav-text">起因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91"><span class="nav-number">1.4.</span> <span class="nav-text">开发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E7%89%B9%E6%80%A7"><span class="nav-number">1.5.</span> <span class="nav-text">相关特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%92%AD%E6%94%BE%E7%B1%BB%E5%9E%8B%E9%80%89%E6%8B%A9"><span class="nav-number">1.5.1.</span> <span class="nav-text">播放类型选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E5%8A%A0%E5%AF%86%E6%92%AD%E6%94%BE"><span class="nav-number">1.5.2.</span> <span class="nav-text">非加密播放</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E6%92%AD%E6%94%BE"><span class="nav-number">1.5.3.</span> <span class="nav-text">加密播放</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E5%9B%BE%E7%89%87"><span class="nav-number">1.5.4.</span> <span class="nav-text">加载图片</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E7%BB%84%E4%BB%B6"><span class="nav-number">1.6.</span> <span class="nav-text">发布组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%BB%93%E5%BA%93%E4%B8%AD%E8%B0%83%E7%94%A8"><span class="nav-number">1.7.</span> <span class="nav-text">在小程序仓库中调用</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ilham Tahir</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.ilhamtahir.com/2021/01/06/how-to-create-mp-third-party-ppt-player-component/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ilham Tahir">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IlhamTahir's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          利用小程序第三方自定义组件能力开发文档播放器组件
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-06 00:06:35" itemprop="dateCreated datePublished" datetime="2021-01-06T00:06:35+00:00">2021-01-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-12-15 13:55:44" itemprop="dateModified" datetime="2022-12-15T13:55:44+00:00">2022-12-15</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="利用小程序第三方自定义组件能力开发文档播放器组件"><a href="#利用小程序第三方自定义组件能力开发文档播放器组件" class="headerlink" title="利用小程序第三方自定义组件能力开发文档播放器组件"></a>利用小程序第三方自定义组件能力开发文档播放器组件</h1><h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>前段时间，承担公司内部智慧课堂小程序项目的技术leader。客户方由于是出版社，对于图书资源播放有高度定制要求，鉴于公司本身文档播放器未能提供原生小程序SDK，我利用小程序第三方自定义组件能力去开发了一个简单的文档播放器组件。</p>
+<span id="more"></span>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>安装小程序第三方命令行工具, 官方提供了命令行工具，用于快速初始化一个项目。执行如下安装命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g @wechat-miniprogram/miniprogram-cli</span><br></pre></td></tr></table></figure>
+
+<p>创建一个空目录，在目录中执行初始化第三方自定义组件示例项目命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 创建空目录</span><br><span class="line">mkdir document-player-miniprogram</span><br><span class="line"></span><br><span class="line"># 进入目录</span><br><span class="line">cd document-player-miniprogram</span><br><span class="line"></span><br><span class="line"># 初始化示例项目</span><br><span class="line">miniprogram init --type custom-component</span><br></pre></td></tr></table></figure>
+
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><p>以下为文档播放器目录结构:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">|--miniprogram_dev // 开发环境构建目录</span><br><span class="line">|--miniprogram_dist // 生产环境构建目录</span><br><span class="line">|--src // 源码</span><br><span class="line">|   |--assets // 静态资源</span><br><span class="line">|   |--aes-decrypter.js // AES解密器</span><br><span class="line">|   |--index(.wxml,.wxss,.ts,.json) // 播放器组件</span><br><span class="line">|   |--scale-image(.wxml,.wxss,.ts,.json) // 单个图片缩放器组件</span><br><span class="line">|   |--types.ts // 接口类</span><br><span class="line">|--test // 测试用例</span><br><span class="line">|--tools // 构建相关代码</span><br><span class="line">|   |--demo // demo 小程序目录，开发环境下会被拷贝生成到 miniprogram_dev 目录中</span><br><span class="line">|   |--config.js // 构建相关配置文件</span><br><span class="line">|</span><br><span class="line">|--gulpfile.js</span><br></pre></td></tr></table></figure>
+
+<h2 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h2><p>根据官方文档，安装依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>启动监听</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run watch</span><br></pre></td></tr></table></figure>
+
+<p>接下来我们就可以正式进入开发自己的自定义组件了。</p>
+<h2 id="相关特性"><a href="#相关特性" class="headerlink" title="相关特性"></a>相关特性</h2><h3 id="播放类型选择"><a href="#播放类型选择" class="headerlink" title="播放类型选择"></a>播放类型选择</h3><p>根据传入参数imageData的长度是否存在来判断播放器加载图片的模式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if (this.properties.imageData.length) &#123;</span><br><span class="line">  this._initNoEncryptData()</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  this._initEncryptData()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="非加密播放"><a href="#非加密播放" class="headerlink" title="非加密播放"></a>非加密播放</h3><p>非加密播放时采用imageData数据构造imageList数据，并传入isEncrypted：false</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">const list = []</span><br><span class="line">for (let i = 0; i &lt; this.properties.imageData.length; i++) &#123;</span><br><span class="line">  const img = &#123;</span><br><span class="line">    src: this.properties.imageData[i],</span><br><span class="line">    page: (i + 1),</span><br><span class="line">    active: false,</span><br><span class="line">    load: false</span><br><span class="line">  &#125; as ImgItem</span><br><span class="line">  list.push(img)</span><br><span class="line">&#125;</span><br><span class="line">this.setData(&#123;</span><br><span class="line">  imageList: list,</span><br><span class="line">  isEncrypted: false</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="加密播放"><a href="#加密播放" class="headerlink" title="加密播放"></a>加密播放</h3><p>加密播放时，imageUrlPrefix参数生效，并构造imageList，传入isEncrypted：true</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">this.setData(&#123;</span><br><span class="line">  imageList: list,</span><br><span class="line">  isEncrypted: true</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="加载图片"><a href="#加载图片" class="headerlink" title="加载图片"></a>加载图片</h3><p>调用goto方法，传入加载page</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">this.goto(&#123;page: 1&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>根据load参数判断图片是否预加载完成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (!newActiveImg.load) &#123;</span><br><span class="line">  this._loadImage(newActiveImg)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>由于图片资源加载需要过程，前端未加载图片暂时有了一个placehold图片。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;scale-image ... src=&quot;&#123;&#123; item.load ? item.base64 : &#x27;./assets/loading.gif&#x27; &#125;&#125;&quot; ... &gt;&lt;/scale-image&gt;</span><br></pre></td></tr></table></figure>
+
+<p>根据图片资源先调用wx.request 方式预加载图片内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wx.request(&#123;</span><br><span class="line">  url: image.src,</span><br><span class="line">  responseType: &#x27;arraybuffer&#x27;,</span><br><span class="line">  success: result =&gt; &#123;</span><br><span class="line">  ...</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>加密模式，采用加密算法解密图片内容并转换base64</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">if (that.data.isEncrypted) &#123;</span><br><span class="line">  const key = that._str2uint32(this.properties.encryptKey)</span><br><span class="line">  const iv = that._str2uint32(this.properties.encryptIv)</span><br><span class="line">  const readerBuffer = new Uint8Array(data)</span><br><span class="line">  // eslint-disable-next-line handle-callback-err,no-new</span><br><span class="line">  new Decrypter(readerBuffer, key, iv, (err, decryptedArray) =&gt; &#123;</span><br><span class="line">    image.base64 = &#x27;data:image/png;base64,&#x27; + wx.arrayBufferToBase64(decryptedArray.buffer)</span><br><span class="line">    image.load = true</span><br><span class="line">    const currentIndex = image.page - 1</span><br><span class="line">    that.setData(&#123;</span><br><span class="line">      [&#x27;imageList[&#x27; + currentIndex + &#x27;]&#x27;]: image,</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<p>非加密模式，内容函数直接转换base64</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">image.base64 = &#x27;data:image/png;base64,&#x27; + wx.arrayBufferToBase64(data)</span><br><span class="line">image.load = true</span><br><span class="line">const currentIndex = image.page - 1</span><br><span class="line">that.setData(&#123;</span><br><span class="line">  [&#x27;imageList[&#x27; + currentIndex + &#x27;]&#x27;]: image,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="发布组件"><a href="#发布组件" class="headerlink" title="发布组件"></a>发布组件</h2><p>生成build内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
+
+<p>设置版本号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">package.json</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;document-player-miniprogram&quot;,</span><br><span class="line">  &quot;version&quot;: &quot;1.3.7&quot;, // 修改</span><br><span class="line">  &quot;description&quot;: &quot;&quot;,</span><br><span class="line">  &quot;main&quot;: &quot;miniprogram_dist/index.js&quot;,</span><br></pre></td></tr></table></figure>
+
+<p>执行发布脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run publish-to-npm</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="在小程序仓库中调用"><a href="#在小程序仓库中调用" class="headerlink" title="在小程序仓库中调用"></a>在小程序仓库中调用</h2><p>升级安装npm包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install document-player-miniprogram --registry  https://registry.npmjs.org/</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>构建npm即可</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/01/18/principles-of-excellent-programming/" rel="next" title="优秀程序设计的原则">
+                  优秀程序设计的原则 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ilham Tahir</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
