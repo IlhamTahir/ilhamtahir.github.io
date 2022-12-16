@@ -4,7 +4,7 @@
   <title><![CDATA[程序猿依力的博客]]></title>
   <link href="http://ilhamtahir.com/atom.xml" rel="self"/>
   <link href="http://ilhamtahir.com/"/>
-  <updated>2022-12-16T09:01:20+08:00</updated>
+  <updated>2022-12-16T09:02:54+08:00</updated>
   <id>http://ilhamtahir.com/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -13,7 +13,7 @@
   <generator uri="http://www.mweb.im/">MWeb</generator>
   
   <entry>
-    <title type="html"><![CDATA[命名最佳实践]]></title>
+    <title type="html"><![CDATA[各位造词党，放过那些变量名和方法名吧！]]></title>
     <link href="http://ilhamtahir.com/naming-best-practices.html"/>
     <updated>2022-12-15T13:42:44+08:00</updated>
     <id>http://ilhamtahir.com/naming-best-practices.html</id>
