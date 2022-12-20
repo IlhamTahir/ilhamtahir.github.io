@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  前端开发不得不知道的编程范式：面向对象 - 程序猿依力的博客
+  MapStruct学习笔记（1）：对象映射就这么简单 - 程序猿依力的博客
   
   </title>
-  <meta name="keywords" content="面向对象,OOP,程序猿依利,编程范式,前端开发人员" />
-  <meta name="description" content="面向对象,OOP,程序猿依利,编程范式,前端开发人员" />
+  
+  
   <link href="atom.xml" rel="alternate" title="程序猿依力的博客" type="application/atom+xml">
     <link rel="stylesheet" href="asset/css/foundation.min.css" />
     <link rel="stylesheet" href="asset/css/docs.css" />
@@ -100,10 +100,10 @@
       <div class="markdown-body article-wrap">
        <div class="article">
           
-          <h1>前端开发不得不知道的编程范式：面向对象</h1>
+          <h1>MapStruct学习笔记（1）：对象映射就这么简单</h1>
      
         <div class="read-more clearfix">
-          <span class="date">2022/12/16 09:12 上午</span>
+          <span class="date">2022/12/21 00:08 上午</span>
 
           
            
@@ -118,203 +118,163 @@
       </div><!-- article -->
 
       <div class="article-content">
-      <blockquote>
-<p>前段时间被一个“500强企业内的前端开发工程师”面试了一轮，舌战了一轮面向对象和函数式。作为后端出身的前端开发，我对面向对象和函数式都有着包容态度，对我来说因为两种派系不同而相互争论、相互职责完全没有必要。<br />
-不过，当前前端开发人员对面向对象知识的匮乏让我很是吃惊，就如这次面试，这位500强前端哥们儿真的对面向对象一窍不通还高谈阔论，我很是不解，如果当今前端开发都如斯，天花板还真的很难提高。<br />
-估决定，我来亲自梳理前端开发人员不得不知道的面向对象知识以及函数式编程知识。这个应该是一个系列，我会顺序渐进方式带大家了解面向对象思想以及函数式编程思想，二者有如何差别？那么开始吧！</p>
-</blockquote>
-<h2><a id="%E4%BB%80%E4%B9%88%E6%98%AF%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%EF%BC%9F" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>什么是面向对象？</h2>
-<p>面向对象编程是一种编程范式，以对象而不是函数为中心的编程风格。这不是什么新鲜事，它从70年代就已经存在，但与来来往往的工具和框架不同，面向对象编程时至今日仍然非常重要，那是因为它不是编程语言或工具。这是一种编程风格或一种编程范式。<br />
-有几种编程语言支持面向对象的编程，例如 C#、Java、Ruby、Python、JavaScript 等。</p>
+      <p>当我们定义多层架构时，我们往往会针对不同层级定义不同的实体对象。如DTO、Entity（DO）以及VO。从而不同对象之间的转换就成为了头等大事。<br />
+在充血模型中，我们一般会把转换方法放入具体对象中。</p>
+<pre><code class="language-mermaid">classDiagram
+class Dto {
+    Vo toVo()
+    Entity toEntity()
+}
+class Vo {
+    Dto toDto()
+}
+class Entity {
+    Dto toDto()
+}
+</code></pre>
 <span id="more"></span><!-- more -->
-<h2><a id="%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8Bv-s%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>面向过程V.S面向对象</h2>
-<p>面向对象编程之前，我们有过面向过程编程，在面向过程中，我们会把程序分成一组的函数来执行。<br />
-所以我们就会有一大堆的存储数据的变量和一大堆对数据进行操作的函数。这种编程风格非常简单直接，通常你在大学中第一个编程科目中都会学到面向过程的编程风格。但是随着你的程序的变大，你会发现，你会写出n多个函数，为了实现相近的功能，可能需要重复写好多代码。如果修改一个函数，可能很多函数也没办法执行下去。这就是你在很多短视频中说到的复制粘贴程序员的意思。这种代码也叫做高耦合，函数和函数之间的依赖关系非常明显，动一发则动全身。所以我们真正需要一种范式规范我们的编程模式，让我们的代码可利于读写，更利于扩展。</p>
-<h2><a id="%E5%B0%81%E8%A3%85" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>封装</h2>
-<p>在面向对象编程中我们将一组相关的变量和函数组合成一个单元。 我们称该单元为<strong>对象</strong>。我们将这些变量称为<strong>属性</strong>，函数称为<strong>方法</strong>。</p>
-<p>比如，我们来想一下一个汽车。</p>
+<p>然而也有部分情况下我们会专门引入转换类来负责对象之间的转换。</p>
 <pre><code class="language-mermaid">classDiagram
-class Car{
-    trademark
-    model
-    color
-    start()
-    stop()
-    move()
+class Dto
+class Vo
+class Entity
+class Converter {
+    Vo toVo(Dto dto)
+    Dto toDto(Entity entity)
+    Entity toEntity(Dto dto)
 }
 </code></pre>
-<p>因此，在面向对象的编程中，您将相关的变量和对它们进行操作的函数分组为对象。<br />
-这个我们叫为<strong>封装</strong>。</p>
-<p>首先我们看以下代码：</p>
-<pre><code class="language-js">let baseSalary = 30000
-let overtime = 10
-let rate = 20
+<p>针对每一个实体模型，我们都要单独形成<code>Convertor</code>类来负责对象之间的转换关系（数据映射）。所以一个好用的动态映射框架对我们提高代码效率有很大的益处。</p>
+<h2><a id="mapstruct" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>MapStruct</h2>
+<p>根据我的Java开发经验，我非常喜欢 MapStruct ，它不仅仅可以帮我快速做好对象之间的映射关系、还可以把一些过程数据构造、格式转换等操作一并处理，让我更关注于业务代码本身。<br />
+MapStruct 是用于生成类型安全的映射Bean类的Java注释处理器。</p>
+<p>与动态映射框架对比，MapStruct 能够带来以下优势：</p>
+<ul>
+<li>通过使用普通方法调用而不是反射所以执行速度更快</li>
+<li>编译时类型的安全性：只能映射限定的属性，不会超边界映射对象</li>
+<li>如果映射有问题会在在构建阶段指出明确的错误</li>
+</ul>
+<p>就如我所说，这个 MapStruct 能做到的事情非常多，对我来说目前为止我只用到了它的皮毛。所以我想通过一个系列，从头开始学习整理 MapStruct 的官方文档。</p>
+<h2><a id="%E5%AE%89%E8%A3%85" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>安装</h2>
+<p>凡事从安装开始！</p>
+<p>MapStruct是基于JSR 269的Java注释处理器，因此可以在命令行构建（Javac，Ant，Maven等）以及IDE内部使用。</p>
+<h3><a id="maven" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven</h3>
+<p>如果你的构建工具是Maven，你需要在你的pom.xml文件使用MapStruct依赖，如下：</p>
+<pre><code class="language-xml">...
+&lt;properties&gt;
+    &lt;org.mapstruct.version&gt;1.4.2.Final&lt;/org.mapstruct.version&gt;
+&lt;/properties&gt;
+...
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.mapstruct&lt;/groupId&gt;
+        &lt;artifactId&gt;mapstruct&lt;/artifactId&gt;
+        &lt;version&gt;${org.mapstruct.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+...
+&lt;build&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+            &lt;version&gt;3.8.1&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;source&gt;1.8&lt;/source&gt;
+                &lt;target&gt;1.8&lt;/target&gt;
+                &lt;annotationProcessorPaths&gt;
+                    &lt;path&gt;
+                        &lt;groupId&gt;org.mapstruct&lt;/groupId&gt;
+                        &lt;artifactId&gt;mapstruct-processor&lt;/artifactId&gt;
+                        &lt;version&gt;${org.mapstruct.version}&lt;/version&gt;
+                    &lt;/path&gt;
+                &lt;/annotationProcessorPaths&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;
+...
+</code></pre>
+<h3><a id="grandle" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Grandle</h3>
+<p>将以下内容添加到你的gradle构建文件中：</p>
+<pre><code class="language-groovy">...
+plugins {
+    ...
+    id &quot;com.diffplug.eclipse.apt&quot; version &quot;3.26.0&quot; // Only for Eclipse
+}
 
-function getWage(baseSalary, overtime, rate) {
-    return baseSalary + (overtime * rate)
+dependencies {
+    ...
+    implementation &quot;org.mapstruct:mapstruct:${mapstructVersion}&quot;
+    annotationProcessor &quot;org.mapstruct:mapstruct-processor:${mapstructVersion}&quot;
+
+    // If you are using mapstruct in test code
+    testAnnotationProcessor &quot;org.mapstruct:mapstruct-processor:${mapstructVersion}&quot;
+}
+...
+</code></pre>
+<h2><a id="%E5%AE%9A%E4%B9%89mapper" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>定义 Mapper</h2>
+<p>我们来定义一个最基础的Mapper吧。</p>
+<pre><code class="language-java">@Mapper
+public interface CarMapper {
+
+    @Mapping(source = &quot;make&quot;, target = &quot;manufacturer&quot;)
+    @Mapping(source = &quot;numberOfSeats&quot;, target = &quot;seatCount&quot;)
+    CarDto carToCarDto(Car car);
+
+    @Mapping(source = &quot;name&quot;, target = &quot;fullName&quot;)
+    PersonDto personToPersonDto(Person person);
 }
 
 </code></pre>
-<p>我们用面向对象解决这个问题</p>
-<pre><code class="language-js">
-let employee = {
-    baseSalary: 30000,
-    overtime: 10,
-    rate: 20,
-    getWage() {
-        return this.baseSalary + (this.overtime * this.rate)
+<p>构建后，MapStruct自动给我们生成映射的实现类</p>
+<pre><code class="language-java">// GENERATED CODE
+public class CarMapperImpl implements CarMapper {
+
+    @Override
+    public CarDto carToCarDto(Car car) {
+        if ( car == null ) {
+            return null;
+        }
+
+        CarDto carDto = new CarDto();
+
+        if ( car.getFeatures() != null ) {
+            carDto.setFeatures( new ArrayList&lt;String&gt;( car.getFeatures() ) );
+        }
+        carDto.setManufacturer( car.getMake() );
+        carDto.setSeatCount( car.getNumberOfSeats() );
+        carDto.setDriver( personToPersonDto( car.getDriver() ) );
+        carDto.setPrice( String.valueOf( car.getPrice() ) );
+        if ( car.getCategory() != null ) {
+            carDto.setCategory( car.getCategory().toString() );
+        }
+        carDto.setEngine( engineToEngineDto( car.getEngine() ) );
+
+        return carDto;
     }
-}
 
-employee.getWage()
-
-</code></pre>
-<p>这两种方案有什么区别？首先我们可以看到<code>getWage</code>函数不需要加入参数了，因为我们已经把<code>getWage</code>函数放到<code>employee</code>对象内部，跟其他变量一起组成了对象。<code>getWage</code>跟这三个属性有了绑定关系， 不需要重新从外面传入参数。<br />
-这个就是我们所谓的封装，我们把相互关联的变量和方法重新组合在一起变成一个新的整体：对象。</p>
-<h2><a id="%E6%8A%BD%E8%B1%A1" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>抽象</h2>
-<p><img src="ilham.aplisin.cn/mweb2/16714105877847.png" alt="" /></p>
-<p>咱们想象一下投影仪为一个对象。这个投影仪对象内部应该会有非常复杂的逻辑。但在外面只有几个按钮供我们交互。你只需要按开关机或者播放按钮，你不需要关注机器里面发生的事情。这些所有的复杂逻辑都对你隐藏。这就是抽象的作用。我们可以在对象中用同样的技术。<br />
-我们可以隐藏一些函数和方法，让外界不可见。这个给我们几种便利。</p>
-<ol>
-<li>
-<p>我们会让对象的接口变得简洁<br />
-使用和理解具有少一点你属性和方法的对象比具有多个属性和方法的对象更易。</p>
-</li>
-<li>
-<p>第二个好处是它可以帮助我们减少变化的影响。<br />
-让我们想象一下，假如我们明天需要改变这些内部属性或者方法。这些更改，对外面不可知<br />
-你可以删除方法，或者更改它的参数，但这些都不会影响外面的代码。<br />
-所以通过抽象，你可以减少变化带来的影响。</p>
-</li>
-</ol>
-<h2><a id="%E7%BB%A7%E6%89%BF" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>继承</h2>
-<p>面向对象第三个核心概念是继承。继承让我们消除冗余代码的一种机制。<br />
-我们看看一个例子。我们想象一下，老师、学生、校长、家长。</p>
-<pre><code class="language-mermaid">classDiagram
-class Teacher{
-    firstName
-    lastName
-    sayHi()
-    sayBye()
-    teach()
-}
-
-class Student {
-    firstName
-    lastName
-    sayHi()
-    sayBye()
-    study()
-}
-
-class Principal {
-    firstName
-    lastName
-    sayHi()
-    sayBye()
-    speach()
-}
-
-class Parent {
-    firstName
-    lastName
-    children Student[]
-    sayHi()
-    sayBye()
-}
-</code></pre>
-<p>这些对象都有几个相同点。我们都需要有姓氏、名字、说嗨、再见等等。<br />
-我们没有必要在每一个对象里面都要重新定义这些属性和方法，我们可以定义一个通用的对象名称叫做<code>Person</code>。</p>
-<pre><code class="language-mermaid">classDiagram
-class Person {
-    firstName
-    lastName
-    sayHi()
-    sayBye()
-}
-</code></pre>
-<p>让老师、学生、校长、家长对象去继承这个Person对象。</p>
-<pre><code class="language-mermaid">classDiagram
-class Person {
-    firstName
-    lastName
-    sayHi()
-    sayBye()
-}
-
-class Teacher{
-    teach()
-}
-
-class Student {
-    study()
-}
-
-class Principal {
-    speach()
-}
-
-class Parent {
-    children Student[]
-}
-Person &lt;|-- Teacher
-Person &lt;|-- Student
-Person &lt;|-- Principal
-Person &lt;|-- Parent
-
-</code></pre>
-<p>这就是继承的魅力，继承帮我们消除冗余代码。</p>
-<h2><a id="%E5%A4%9A%E6%80%81" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>多态</h2>
-<p>多态的意思就是多种形态。多态帮你避免使用雍长的ifelse预计和switch语句。<br />
-让我们回到刚刚几个方法我们每个人都有getFullname。但每个对象都有不同的叫法：李老师、依同学、艾校长以及高家长，按照面向过程，你可能会通过switch来判断并使用对应的方法，例如：</p>
-<pre><code class="language-ts">switch(person.getType()) {
-
-    case: 'teacher': console.log('李老师');break;
-    case: 'student': console.log('依同学');break;
-    case: 'principal': console.log('艾校长');break;
-    case: 'parent': console.log('高家长');break;
-
-}
-</code></pre>
-<pre><code class="language-ts">
-class Person {
-    officalName() {
-        console.log('依力');
+    @Override
+    public PersonDto personToPersonDto(Person person) {
+        //...
     }
-}
 
-class Teacher extends Person {
-        officalName() {
-        console.log('李老师');
-    }
-}
+    private EngineDto engineToEngineDto(Engine engine) {
+        if ( engine == null ) {
+            return null;
+        }
 
-class Student extends Person {
-        officalName() {
-        console.log('依同学');
+        EngineDto engineDto = new EngineDto();
+
+        engineDto.setHorsePower(engine.getHorsePower());
+        engineDto.setFuel(engine.getFuel());
+
+        return engineDto;
     }
 }
 </code></pre>
-<pre><code class="language-ts">
-const student = new Student();
-
-const teacher = new Teacher();
-
-const people = [new Student(), new Teacher()]
-
-people.forEach(item=&gt;item.officalName())
-
-</code></pre>
-<p>在面向对象中，我们可以实现对应的方法就叫officalName()。 放到Person对象中，并且在对应的对象中实现这个方法即可。我们就可以使用<code>element.officalName()</code>即可。假如我们需要引入更多的对象，我只需要继承<code>Person</code>，而不用去修改具体业务代码。</p>
-<h2><a id="%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%BC%98%E5%8A%BF" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>面向对象的优势</h2>
-<h3><a id="%E5%B0%81%E8%A3%85" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>封装</h3>
-<p>我们组合相关联的变量和函数。用这个我们来降低复杂度。增加可复用性。</p>
-<h3><a id="%E6%8A%BD%E8%B1%A1" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>抽象</h3>
-<p>我们隐藏多余的复杂的属性和方法，我们可以降低复杂度，隔离代码变更的影响。</p>
-<h3><a id="%E7%BB%A7%E6%89%BF" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>继承</h3>
-<p>我们可以降低代码冗余</p>
-<h3><a id="%E5%A4%9A%E6%80%81" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>多态</h3>
-<p>我们可以重构难看的switch语句。</p>
+<p>是不是很神奇？这是官方最快捷的案例。其实要弄懂MapStruct的映射规则以及编写机制，我们可以大大提高日常开发过程中的对象转换效率。让我们的代码更加简洁更关注于业务模型的设计工作当中，告别这些繁琐的转换类的编写。</p>
+<p>今天就带大家看到这里。咱们下期继续深入学习MapStruct。</p>
 
 
     
@@ -325,16 +285,13 @@ people.forEach(item=&gt;item.officalName())
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
       
-          <a href="16715524929861.html" 
-          title="Previous Post: MapStruct学习笔记（1）：对象映射就这么简单">&laquo; MapStruct学习笔记（1）：对象映射就这么简单</a>
-      
         </p>
         </div>
         <div class="large-6 columns">
       <p class="text-right" style="padding:15px 0px;">
       
-          <a  href="naming-best-practices.html" 
-          title="Next Post: 各位造词党，放过那些变量名和方法名吧！">各位造词党，放过那些变量名和方法名吧！ &raquo;</a>
+          <a  href="frontend-oop.html" 
+          title="Next Post: 前端开发不得不知道的编程范式：面向对象">前端开发不得不知道的编程范式：面向对象 &raquo;</a>
       
       </p>
         </div>

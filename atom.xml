@@ -4,13 +4,180 @@
   <title><![CDATA[程序猿依力的博客]]></title>
   <link href="http://ilhamtahir.com/atom.xml" rel="self"/>
   <link href="http://ilhamtahir.com/"/>
-  <updated>2022-12-19T08:48:28+08:00</updated>
+  <updated>2022-12-21T01:00:49+08:00</updated>
   <id>http://ilhamtahir.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[MapStruct学习笔记（1）：对象映射就这么简单]]></title>
+    <link href="http://ilhamtahir.com/16715524929861.html"/>
+    <updated>2022-12-21T00:08:12+08:00</updated>
+    <id>http://ilhamtahir.com/16715524929861.html</id>
+    <content type="html"><![CDATA[
+<p>当我们定义多层架构时，我们往往会针对不同层级定义不同的实体对象。如DTO、Entity（DO）以及VO。从而不同对象之间的转换就成为了头等大事。<br />
+在充血模型中，我们一般会把转换方法放入具体对象中。</p>
+<pre><code class="language-mermaid">classDiagram
+class Dto {
+    Vo toVo()
+    Entity toEntity()
+}
+class Vo {
+    Dto toDto()
+}
+class Entity {
+    Dto toDto()
+}
+</code></pre>
+<span id="more"></span><!-- more -->
+<p>然而也有部分情况下我们会专门引入转换类来负责对象之间的转换。</p>
+<pre><code class="language-mermaid">classDiagram
+class Dto
+class Vo
+class Entity
+class Converter {
+    Vo toVo(Dto dto)
+    Dto toDto(Entity entity)
+    Entity toEntity(Dto dto)
+}
+</code></pre>
+<p>针对每一个实体模型，我们都要单独形成<code>Convertor</code>类来负责对象之间的转换关系（数据映射）。所以一个好用的动态映射框架对我们提高代码效率有很大的益处。</p>
+<h2><a id="mapstruct" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>MapStruct</h2>
+<p>根据我的Java开发经验，我非常喜欢 MapStruct ，它不仅仅可以帮我快速做好对象之间的映射关系、还可以把一些过程数据构造、格式转换等操作一并处理，让我更关注于业务代码本身。<br />
+MapStruct 是用于生成类型安全的映射Bean类的Java注释处理器。</p>
+<p>与动态映射框架对比，MapStruct 能够带来以下优势：</p>
+<ul>
+<li>通过使用普通方法调用而不是反射所以执行速度更快</li>
+<li>编译时类型的安全性：只能映射限定的属性，不会超边界映射对象</li>
+<li>如果映射有问题会在在构建阶段指出明确的错误</li>
+</ul>
+<p>就如我所说，这个 MapStruct 能做到的事情非常多，对我来说目前为止我只用到了它的皮毛。所以我想通过一个系列，从头开始学习整理 MapStruct 的官方文档。</p>
+<h2><a id="%E5%AE%89%E8%A3%85" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>安装</h2>
+<p>凡事从安装开始！</p>
+<p>MapStruct是基于JSR 269的Java注释处理器，因此可以在命令行构建（Javac，Ant，Maven等）以及IDE内部使用。</p>
+<h3><a id="maven" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven</h3>
+<p>如果你的构建工具是Maven，你需要在你的pom.xml文件使用MapStruct依赖，如下：</p>
+<pre><code class="language-xml">...
+&lt;properties&gt;
+    &lt;org.mapstruct.version&gt;1.4.2.Final&lt;/org.mapstruct.version&gt;
+&lt;/properties&gt;
+...
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.mapstruct&lt;/groupId&gt;
+        &lt;artifactId&gt;mapstruct&lt;/artifactId&gt;
+        &lt;version&gt;${org.mapstruct.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+...
+&lt;build&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+            &lt;version&gt;3.8.1&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;source&gt;1.8&lt;/source&gt;
+                &lt;target&gt;1.8&lt;/target&gt;
+                &lt;annotationProcessorPaths&gt;
+                    &lt;path&gt;
+                        &lt;groupId&gt;org.mapstruct&lt;/groupId&gt;
+                        &lt;artifactId&gt;mapstruct-processor&lt;/artifactId&gt;
+                        &lt;version&gt;${org.mapstruct.version}&lt;/version&gt;
+                    &lt;/path&gt;
+                &lt;/annotationProcessorPaths&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;
+...
+</code></pre>
+<h3><a id="grandle" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Grandle</h3>
+<p>将以下内容添加到你的gradle构建文件中：</p>
+<pre><code class="language-groovy">...
+plugins {
+    ...
+    id &quot;com.diffplug.eclipse.apt&quot; version &quot;3.26.0&quot; // Only for Eclipse
+}
+
+dependencies {
+    ...
+    implementation &quot;org.mapstruct:mapstruct:${mapstructVersion}&quot;
+    annotationProcessor &quot;org.mapstruct:mapstruct-processor:${mapstructVersion}&quot;
+
+    // If you are using mapstruct in test code
+    testAnnotationProcessor &quot;org.mapstruct:mapstruct-processor:${mapstructVersion}&quot;
+}
+...
+</code></pre>
+<h2><a id="%E5%AE%9A%E4%B9%89mapper" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>定义 Mapper</h2>
+<p>我们来定义一个最基础的Mapper吧。</p>
+<pre><code class="language-java">@Mapper
+public interface CarMapper {
+
+    @Mapping(source = &quot;make&quot;, target = &quot;manufacturer&quot;)
+    @Mapping(source = &quot;numberOfSeats&quot;, target = &quot;seatCount&quot;)
+    CarDto carToCarDto(Car car);
+
+    @Mapping(source = &quot;name&quot;, target = &quot;fullName&quot;)
+    PersonDto personToPersonDto(Person person);
+}
+
+</code></pre>
+<p>构建后，MapStruct自动给我们生成映射的实现类</p>
+<pre><code class="language-java">// GENERATED CODE
+public class CarMapperImpl implements CarMapper {
+
+    @Override
+    public CarDto carToCarDto(Car car) {
+        if ( car == null ) {
+            return null;
+        }
+
+        CarDto carDto = new CarDto();
+
+        if ( car.getFeatures() != null ) {
+            carDto.setFeatures( new ArrayList&lt;String&gt;( car.getFeatures() ) );
+        }
+        carDto.setManufacturer( car.getMake() );
+        carDto.setSeatCount( car.getNumberOfSeats() );
+        carDto.setDriver( personToPersonDto( car.getDriver() ) );
+        carDto.setPrice( String.valueOf( car.getPrice() ) );
+        if ( car.getCategory() != null ) {
+            carDto.setCategory( car.getCategory().toString() );
+        }
+        carDto.setEngine( engineToEngineDto( car.getEngine() ) );
+
+        return carDto;
+    }
+
+    @Override
+    public PersonDto personToPersonDto(Person person) {
+        //...
+    }
+
+    private EngineDto engineToEngineDto(Engine engine) {
+        if ( engine == null ) {
+            return null;
+        }
+
+        EngineDto engineDto = new EngineDto();
+
+        engineDto.setHorsePower(engine.getHorsePower());
+        engineDto.setFuel(engine.getFuel());
+
+        return engineDto;
+    }
+}
+</code></pre>
+<p>是不是很神奇？这是官方最快捷的案例。其实要弄懂MapStruct的映射规则以及编写机制，我们可以大大提高日常开发过程中的对象转换效率。让我们的代码更加简洁更关注于业务模型的设计工作当中，告别这些繁琐的转换类的编写。</p>
+<p>今天就带大家看到这里。咱们下期继续深入学习MapStruct。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[前端开发不得不知道的编程范式：面向对象]]></title>
@@ -72,7 +239,7 @@ employee.getWage()
 <p>这两种方案有什么区别？首先我们可以看到<code>getWage</code>函数不需要加入参数了，因为我们已经把<code>getWage</code>函数放到<code>employee</code>对象内部，跟其他变量一起组成了对象。<code>getWage</code>跟这三个属性有了绑定关系， 不需要重新从外面传入参数。<br />
 这个就是我们所谓的封装，我们把相互关联的变量和方法重新组合在一起变成一个新的整体：对象。</p>
 <h2><a id="%E6%8A%BD%E8%B1%A1" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>抽象</h2>
-<p><img src="media/16711531439482/16714105877847.png" alt="" /></p>
+<p><img src="ilham.aplisin.cn/mweb2/16714105877847.png" alt="" /></p>
 <p>咱们想象一下投影仪为一个对象。这个投影仪对象内部应该会有非常复杂的逻辑。但在外面只有几个按钮供我们交互。你只需要按开关机或者播放按钮，你不需要关注机器里面发生的事情。这些所有的复杂逻辑都对你隐藏。这就是抽象的作用。我们可以在对象中用同样的技术。<br />
 我们可以隐藏一些函数和方法，让外界不可见。这个给我们几种便利。</p>
 <ol>
