@@ -44,6 +44,8 @@
         
         <li id=""><a target="_blank" href="https://edu.bili-tech.com">课堂</a></li>
         
+        <li id=""><a target="_self" href="course-schedule.html">课程更新表</a></li>
+        
         </ul>
 
         <ul class="right" id="search-wrap">
@@ -74,6 +76,8 @@
         <li><a target="_self" href="archives.html">归档</a></li>
         
         <li><a target="_blank" href="https://edu.bili-tech.com">课堂</a></li>
+        
+        <li><a target="_self" href="course-schedule.html">课程更新表</a></li>
         
 
     <li><label>Categories</label></li>
@@ -120,7 +124,7 @@
       <div class="article-content">
       <p>当我们定义多层架构时，我们往往会针对不同层级定义不同的实体对象。如DTO、Entity（DO）以及VO。从而不同对象之间的转换就成为了头等大事。<br />
 在充血模型中，我们一般会把转换方法放入具体对象中。</p>
-<pre><code class="language-mermaid">classDiagram
+<pre class="line-numbers"><code class="language-mermaid">classDiagram
 class Dto {
     Vo toVo()
     Entity toEntity()
@@ -134,7 +138,7 @@ class Entity {
 </code></pre>
 <span id="more"></span><!-- more -->
 <p>然而也有部分情况下我们会专门引入转换类来负责对象之间的转换。</p>
-<pre><code class="language-mermaid">classDiagram
+<pre class="line-numbers"><code class="language-mermaid">classDiagram
 class Dto
 class Vo
 class Entity
@@ -160,7 +164,7 @@ MapStruct 是用于生成类型安全的映射Bean类的Java注释处理器。</
 <p>MapStruct是基于JSR 269的Java注释处理器，因此可以在命令行构建（Javac，Ant，Maven等）以及IDE内部使用。</p>
 <h3><a id="maven" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven</h3>
 <p>如果你的构建工具是Maven，你需要在你的pom.xml文件使用MapStruct依赖，如下：</p>
-<pre><code class="language-xml">...
+<pre class="line-numbers"><code class="language-xml">...
 &lt;properties&gt;
     &lt;org.mapstruct.version&gt;1.4.2.Final&lt;/org.mapstruct.version&gt;
 &lt;/properties&gt;
@@ -197,7 +201,7 @@ MapStruct 是用于生成类型安全的映射Bean类的Java注释处理器。</
 </code></pre>
 <h3><a id="grandle" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Grandle</h3>
 <p>将以下内容添加到你的gradle构建文件中：</p>
-<pre><code class="language-groovy">...
+<pre class="line-numbers"><code class="language-groovy">...
 plugins {
     ...
     id &quot;com.diffplug.eclipse.apt&quot; version &quot;3.26.0&quot; // Only for Eclipse
@@ -215,8 +219,8 @@ dependencies {
 </code></pre>
 <h2><a id="%E5%AE%9A%E4%B9%89mapper" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>定义 Mapper</h2>
 <p>我们来定义一个最基础的Mapper吧。</p>
-<pre><code class="language-java">@Mapper
-public interface CarMapper {
+<pre class="line-numbers"><code class="language-java">@Mapper
+public ixnterface CarMapper {
 
     @Mapping(source = &quot;make&quot;, target = &quot;manufacturer&quot;)
     @Mapping(source = &quot;numberOfSeats&quot;, target = &quot;seatCount&quot;)
@@ -228,7 +232,7 @@ public interface CarMapper {
 
 </code></pre>
 <p>构建后，MapStruct自动给我们生成映射的实现类</p>
-<pre><code class="language-java">// GENERATED CODE
+<pre class="line-numbers"><code class="language-java">// GENERATED CODE
 public class CarMapperImpl implements CarMapper {
 
     @Override

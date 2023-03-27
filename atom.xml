@@ -4,7 +4,7 @@
   <title><![CDATA[程序猿依力的博客]]></title>
   <link href="http://ilhamtahir.com/atom.xml" rel="self"/>
   <link href="http://ilhamtahir.com/"/>
-  <updated>2022-12-21T01:02:13+08:00</updated>
+  <updated>2023-03-27T14:02:59+08:00</updated>
   <id>http://ilhamtahir.com/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -20,7 +20,7 @@
     <content type="html"><![CDATA[
 <p>当我们定义多层架构时，我们往往会针对不同层级定义不同的实体对象。如DTO、Entity（DO）以及VO。从而不同对象之间的转换就成为了头等大事。<br />
 在充血模型中，我们一般会把转换方法放入具体对象中。</p>
-<pre><code class="language-mermaid">classDiagram
+<pre class="line-numbers"><code class="language-mermaid">classDiagram
 class Dto {
     Vo toVo()
     Entity toEntity()
@@ -34,7 +34,7 @@ class Entity {
 </code></pre>
 <span id="more"></span><!-- more -->
 <p>然而也有部分情况下我们会专门引入转换类来负责对象之间的转换。</p>
-<pre><code class="language-mermaid">classDiagram
+<pre class="line-numbers"><code class="language-mermaid">classDiagram
 class Dto
 class Vo
 class Entity
@@ -60,7 +60,7 @@ MapStruct 是用于生成类型安全的映射Bean类的Java注释处理器。</
 <p>MapStruct是基于JSR 269的Java注释处理器，因此可以在命令行构建（Javac，Ant，Maven等）以及IDE内部使用。</p>
 <h3><a id="maven" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven</h3>
 <p>如果你的构建工具是Maven，你需要在你的pom.xml文件使用MapStruct依赖，如下：</p>
-<pre><code class="language-xml">...
+<pre class="line-numbers"><code class="language-xml">...
 &lt;properties&gt;
     &lt;org.mapstruct.version&gt;1.4.2.Final&lt;/org.mapstruct.version&gt;
 &lt;/properties&gt;
@@ -97,7 +97,7 @@ MapStruct 是用于生成类型安全的映射Bean类的Java注释处理器。</
 </code></pre>
 <h3><a id="grandle" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Grandle</h3>
 <p>将以下内容添加到你的gradle构建文件中：</p>
-<pre><code class="language-groovy">...
+<pre class="line-numbers"><code class="language-groovy">...
 plugins {
     ...
     id &quot;com.diffplug.eclipse.apt&quot; version &quot;3.26.0&quot; // Only for Eclipse
@@ -115,8 +115,8 @@ dependencies {
 </code></pre>
 <h2><a id="%E5%AE%9A%E4%B9%89mapper" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>定义 Mapper</h2>
 <p>我们来定义一个最基础的Mapper吧。</p>
-<pre><code class="language-java">@Mapper
-public interface CarMapper {
+<pre class="line-numbers"><code class="language-java">@Mapper
+public ixnterface CarMapper {
 
     @Mapping(source = &quot;make&quot;, target = &quot;manufacturer&quot;)
     @Mapping(source = &quot;numberOfSeats&quot;, target = &quot;seatCount&quot;)
@@ -128,7 +128,7 @@ public interface CarMapper {
 
 </code></pre>
 <p>构建后，MapStruct自动给我们生成映射的实现类</p>
-<pre><code class="language-java">// GENERATED CODE
+<pre class="line-numbers"><code class="language-java">// GENERATED CODE
 public class CarMapperImpl implements CarMapper {
 
     @Override
@@ -200,7 +200,7 @@ public class CarMapperImpl implements CarMapper {
 <h2><a id="%E5%B0%81%E8%A3%85" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>封装</h2>
 <p>在面向对象编程中我们将一组相关的变量和函数组合成一个单元。 我们称该单元为<strong>对象</strong>。我们将这些变量称为<strong>属性</strong>，函数称为<strong>方法</strong>。</p>
 <p>比如，我们来想一下一个汽车。</p>
-<pre><code class="language-mermaid">classDiagram
+<pre class="line-numbers"><code class="language-mermaid">classDiagram
 class Car{
     trademark
     model
@@ -213,7 +213,7 @@ class Car{
 <p>因此，在面向对象的编程中，您将相关的变量和对它们进行操作的函数分组为对象。<br />
 这个我们叫为<strong>封装</strong>。</p>
 <p>首先我们看以下代码：</p>
-<pre><code class="language-js">let baseSalary = 30000
+<pre class="line-numbers"><code class="language-js">let baseSalary = 30000
 let overtime = 10
 let rate = 20
 
@@ -223,7 +223,7 @@ function getWage(baseSalary, overtime, rate) {
 
 </code></pre>
 <p>我们用面向对象解决这个问题</p>
-<pre><code class="language-js">
+<pre class="line-numbers"><code class="language-js">
 let employee = {
     baseSalary: 30000,
     overtime: 10,
@@ -257,7 +257,7 @@ employee.getWage()
 <h2><a id="%E7%BB%A7%E6%89%BF" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>继承</h2>
 <p>面向对象第三个核心概念是继承。继承让我们消除冗余代码的一种机制。<br />
 我们看看一个例子。我们想象一下，老师、学生、校长、家长。</p>
-<pre><code class="language-mermaid">classDiagram
+<pre class="line-numbers"><code class="language-mermaid">classDiagram
 class Teacher{
     firstName
     lastName
@@ -292,7 +292,7 @@ class Parent {
 </code></pre>
 <p>这些对象都有几个相同点。我们都需要有姓氏、名字、说嗨、再见等等。<br />
 我们没有必要在每一个对象里面都要重新定义这些属性和方法，我们可以定义一个通用的对象名称叫做<code>Person</code>。</p>
-<pre><code class="language-mermaid">classDiagram
+<pre class="line-numbers"><code class="language-mermaid">classDiagram
 class Person {
     firstName
     lastName
@@ -301,7 +301,7 @@ class Person {
 }
 </code></pre>
 <p>让老师、学生、校长、家长对象去继承这个Person对象。</p>
-<pre><code class="language-mermaid">classDiagram
+<pre class="line-numbers"><code class="language-mermaid">classDiagram
 class Person {
     firstName
     lastName
@@ -334,7 +334,7 @@ Person &lt;|-- Parent
 <h2><a id="%E5%A4%9A%E6%80%81" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>多态</h2>
 <p>多态的意思就是多种形态。多态帮你避免使用雍长的ifelse预计和switch语句。<br />
 让我们回到刚刚几个方法我们每个人都有getFullname。但每个对象都有不同的叫法：李老师、依同学、艾校长以及高家长，按照面向过程，你可能会通过switch来判断并使用对应的方法，例如：</p>
-<pre><code class="language-ts">switch(person.getType()) {
+<pre class="line-numbers"><code class="language-ts">switch(person.getType()) {
 
     case: 'teacher': console.log('李老师');break;
     case: 'student': console.log('依同学');break;
@@ -343,7 +343,7 @@ Person &lt;|-- Parent
 
 }
 </code></pre>
-<pre><code class="language-ts">
+<pre class="line-numbers"><code class="language-ts">
 class Person {
     officalName() {
         console.log('依力');
@@ -362,7 +362,7 @@ class Student extends Person {
     }
 }
 </code></pre>
-<pre><code class="language-ts">
+<pre class="line-numbers"><code class="language-ts">
 const student = new Student();
 
 const teacher = new Teacher();
@@ -396,19 +396,19 @@ people.forEach(item=&gt;item.officalName())
 <span id="more"></span><!-- more -->
 <h2><a id="%E5%A6%82%E4%BD%95%E8%B5%B7%E5%A5%BD%E7%9A%84%E5%90%8D%E5%AD%97" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>如何起好的名字</h2>
 <h3><a id="%E8%B5%B7%E7%9A%84%E5%90%8D%E5%AD%97%E6%98%AF%E6%9C%89%E6%84%8F%E4%B9%89%E7%9A%84" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>起的名字是有意义的</h3>
-<pre><code class="language-js">不要像：
+<pre class="line-numbers"><code class="language-js">不要像：
 a、arr、tmp
 
 应当：
 article、courseArray、tmpFile
 </code></pre>
 <h3><a id="%E8%A6%81%E8%80%83%E8%99%91%E5%90%8D%E5%AD%97%E7%9A%84%E9%95%BF%E5%BA%A6" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>要考虑名字的长度</h3>
-<pre><code class="language-js">不要像：
+<pre class="line-numbers"><code class="language-js">不要像：
 let consecutivePasswordErrorTimes
 const filedsWithUserIdAndQuestionNumAndQuestionAndHashedAnswerAndAnswerSalt
 </code></pre>
 <h3><a id="%E5%90%8D%E5%AD%97%E8%A6%81%E9%81%B5%E5%AE%88%E8%A7%84%E8%8C%83" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>名字要遵守规范</h3>
-<pre><code class="language-ts">const MAX_NUM: number = 10;                // 常量
+<pre class="line-numbers"><code class="language-ts">const MAX_NUM: number = 10;                // 常量
 let newClass: number = 10;                  // 变量
 class CourseService {}              // 类名
 const getCourse = (id: number): Course =&gt; {}     // 方法
@@ -421,7 +421,7 @@ const getCourse = (id: number): Course =&gt; {}     // 方法
 <blockquote>
 <p>重要的事情说三遍：大驼峰！大驼峰！大驼峰！</p>
 </blockquote>
-<pre><code class="language-ts">
+<pre class="line-numbers"><code class="language-ts">
 type User = {}
 
 interface Filter {}
@@ -459,13 +459,13 @@ interface Filter {}
 <h4><a id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>解决思路</h4>
 <p>将参数在目标方法内部获取，以便减少当前方法参数数量</p>
 <p>不好的示例</p>
-<pre><code class="language-php">$basePrice = $this-&gt;quantity * $this-&gt;itemPrice;
+<pre class="line-numbers"><code class="language-php">$basePrice = $this-&gt;quantity * $this-&gt;itemPrice;
 $seasonDiscount = $this-&gt;getSeasonalDiscount();
 $fees = $this-&gt;getFees();
 $finalPrice = $this-&gt;discountedPrice($basePrice, $seasonDiscount, $fees);
 </code></pre>
 <p>好的示例</p>
-<pre><code class="language-php">$basePrice = $this-&gt;quantity * $this-&gt;itemPrice;
+<pre class="line-numbers"><code class="language-php">$basePrice = $this-&gt;quantity * $this-&gt;itemPrice;
 $finalPrice = $this-&gt;discountedPrice($basePrice);
 </code></pre>
 <h4><a id="%E9%87%8D%E6%9E%84%E6%AD%A5%E9%AA%A4" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>重构步骤</h4>
@@ -476,7 +476,7 @@ $finalPrice = $this-&gt;discountedPrice($basePrice);
 <li>全部替换完成后，使用<code>Remove Parameter</code> 将该参数去掉</li>
 </ol>
 <h4><a id="%E7%A4%BA%E4%BE%8B" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>示例</h4>
-<pre><code class="language-javascript">// edusoho/on-line-course/pages/task/taskStudent.js 202~210
+<pre class="line-numbers"><code class="language-javascript">// edusoho/on-line-course/pages/task/taskStudent.js 202~210
 
     const menuData = functionButtomMenuData({
       role: data.taskData.role,
@@ -489,7 +489,7 @@ $finalPrice = $this-&gt;discountedPrice($basePrice);
     });
 </code></pre>
 <h3><a id="replace-parameter-with-method-call%E4%BB%A5%E6%98%8E%E7%A1%AE%E5%87%BD%E6%95%B0%E5%8F%96%E4%BB%A3%E5%8F%82%E6%95%B0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Replace Parameter with Method Call(以明确函数取代参数)</h3>
-<pre><code class="language-php">// src/Biz/Activity/Service/Impl/ActivityServiceImpl.php 243
+<pre class="line-numbers"><code class="language-php">// src/Biz/Activity/Service/Impl/ActivityServiceImpl.php 243
 
 protected function syncActivityMaterials($activity, $materials, $mode = 'create')
 
@@ -502,7 +502,7 @@ protected function syncActivityMaterials($activity, $materials, $mode = 'create'
 <li>完毕后删除原函数</li>
 </ol>
 <h3><a id="introduce-parameter-object%EF%BC%88%E5%BC%95%E5%85%A5%E5%8F%82%E6%95%B0%E5%AF%B9%E8%B1%A1%EF%BC%89" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduce Parameter Object（引入参数对象）</h3>
-<pre><code class="language-javascript">
+<pre class="line-numbers"><code class="language-javascript">
 // edusoho/pages/binding/binding.js 158
 
       userController('loginUser', password,identify,openId ).success(data=&gt; {
@@ -579,10 +579,10 @@ protected function syncActivityMaterials($activity, $materials, $mode = 'create'
 <span id="more"></span><!-- more -->
 <h2><a id="%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>准备工作</h2>
 <p>安装小程序第三方命令行工具, 官方提供了命令行工具，用于快速初始化一个项目。执行如下安装命令：</p>
-<pre><code class="language-plain_text">npm install -g @wechat-miniprogram/miniprogram-cli
+<pre class="line-numbers"><code class="language-plain_text">npm install -g @wechat-miniprogram/miniprogram-cli
 </code></pre>
 <p>创建一个空目录，在目录中执行初始化第三方自定义组件示例项目命令。</p>
-<pre><code class="language-plain_text"># 创建空目录
+<pre class="line-numbers"><code class="language-plain_text"># 创建空目录
 mkdir document-player-miniprogram
 
 # 进入目录
@@ -593,7 +593,7 @@ miniprogram init --type custom-component
 </code></pre>
 <h2><a id="%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>目录结构</h2>
 <p>以下为文档播放器目录结构:</p>
-<pre><code class="language-plain_text">|--miniprogram_dev // 开发环境构建目录
+<pre class="line-numbers"><code class="language-plain_text">|--miniprogram_dev // 开发环境构建目录
 |--miniprogram_dist // 生产环境构建目录
 |--src // 源码
 |   |--assets // 静态资源
@@ -610,16 +610,16 @@ miniprogram init --type custom-component
 </code></pre>
 <h2><a id="%E5%BC%80%E5%8F%91" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>开发</h2>
 <p>根据官方文档，安装依赖</p>
-<pre><code class="language-plain_text">npm install
+<pre class="line-numbers"><code class="language-plain_text">npm install
 </code></pre>
 <p>启动监听</p>
-<pre><code class="language-plain_text">npm run watch
+<pre class="line-numbers"><code class="language-plain_text">npm run watch
 </code></pre>
 <p>接下来我们就可以正式进入开发自己的自定义组件了。</p>
 <h2><a id="%E7%9B%B8%E5%85%B3%E7%89%B9%E6%80%A7" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>相关特性</h2>
 <h3><a id="%E6%92%AD%E6%94%BE%E7%B1%BB%E5%9E%8B%E9%80%89%E6%8B%A9" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>播放类型选择</h3>
 <p>根据传入参数imageData的长度是否存在来判断播放器加载图片的模式：</p>
-<pre><code class="language-plain_text">      if (this.properties.imageData.length) {
+<pre class="line-numbers"><code class="language-plain_text">      if (this.properties.imageData.length) {
         this._initNoEncryptData()
       } else {
         this._initEncryptData()
@@ -627,7 +627,7 @@ miniprogram init --type custom-component
 </code></pre>
 <h3><a id="%E9%9D%9E%E5%8A%A0%E5%AF%86%E6%92%AD%E6%94%BE" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>非加密播放</h3>
 <p>非加密播放时采用imageData数据构造imageList数据，并传入isEncrypted：false</p>
-<pre><code class="language-plain_text">      const list = []
+<pre class="line-numbers"><code class="language-plain_text">      const list = []
       for (let i = 0; i &lt; this.properties.imageData.length; i++) {
         const img = {
           src: this.properties.imageData[i],
@@ -644,26 +644,26 @@ miniprogram init --type custom-component
 </code></pre>
 <h3><a id="%E5%8A%A0%E5%AF%86%E6%92%AD%E6%94%BE" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>加密播放</h3>
 <p>加密播放时，imageUrlPrefix参数生效，并构造imageList，传入isEncrypted：true</p>
-<pre><code class="language-plain_text">      this.setData({
+<pre class="line-numbers"><code class="language-plain_text">      this.setData({
         imageList: list,
         isEncrypted: true
       })
 </code></pre>
 <h3><a id="%E5%8A%A0%E8%BD%BD%E5%9B%BE%E7%89%87" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>加载图片</h3>
 <p>调用goto方法，传入加载page</p>
-<pre><code class="language-plain_text">      this.goto({page: 1})
+<pre class="line-numbers"><code class="language-plain_text">      this.goto({page: 1})
 
 </code></pre>
 <p>根据load参数判断图片是否预加载完成</p>
-<pre><code class="language-plain_text">        if (!newActiveImg.load) {
+<pre class="line-numbers"><code class="language-plain_text">        if (!newActiveImg.load) {
           this._loadImage(newActiveImg)
         }
 </code></pre>
 <p>由于图片资源加载需要过程，前端未加载图片暂时有了一个placehold图片。</p>
-<pre><code class="language-plain_text">        &lt;scale-image ... src=&quot;{{ item.load ? item.base64 : './assets/loading.gif' }}&quot; ... &gt;&lt;/scale-image&gt;
+<pre class="line-numbers"><code class="language-plain_text">        &lt;scale-image ... src=&quot;{{ item.load ? item.base64 : './assets/loading.gif' }}&quot; ... &gt;&lt;/scale-image&gt;
 </code></pre>
 <p>根据图片资源先调用wx.request 方式预加载图片内容</p>
-<pre><code class="language-plain_text">      wx.request({
+<pre class="line-numbers"><code class="language-plain_text">      wx.request({
         url: image.src,
         responseType: 'arraybuffer',
         success: result =&gt; {
@@ -671,7 +671,7 @@ miniprogram init --type custom-component
         }
 </code></pre>
 <p>加密模式，采用加密算法解密图片内容并转换base64</p>
-<pre><code class="language-plain_text">          if (that.data.isEncrypted) {
+<pre class="line-numbers"><code class="language-plain_text">          if (that.data.isEncrypted) {
             const key = that._str2uint32(this.properties.encryptKey)
             const iv = that._str2uint32(this.properties.encryptIv)
             const readerBuffer = new Uint8Array(data)
@@ -687,7 +687,7 @@ miniprogram init --type custom-component
           } 
 </code></pre>
 <p>非加密模式，内容函数直接转换base64</p>
-<pre><code class="language-plain_text">            image.base64 = 'data:image/png;base64,' + wx.arrayBufferToBase64(data)
+<pre class="line-numbers"><code class="language-plain_text">            image.base64 = 'data:image/png;base64,' + wx.arrayBufferToBase64(data)
             image.load = true
             const currentIndex = image.page - 1
             that.setData({
@@ -696,10 +696,10 @@ miniprogram init --type custom-component
 </code></pre>
 <h2><a id="%E5%8F%91%E5%B8%83%E7%BB%84%E4%BB%B6" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>发布组件</h2>
 <p>生成build内容</p>
-<pre><code class="language-plain_text">npm run build
+<pre class="line-numbers"><code class="language-plain_text">npm run build
 </code></pre>
 <p>设置版本号</p>
-<pre><code class="language-plain_text">package.json
+<pre class="line-numbers"><code class="language-plain_text">package.json
 {
   &quot;name&quot;: &quot;document-player-miniprogram&quot;,
   &quot;version&quot;: &quot;1.3.7&quot;, // 修改
@@ -707,11 +707,11 @@ miniprogram init --type custom-component
   &quot;main&quot;: &quot;miniprogram_dist/index.js&quot;,
 </code></pre>
 <p>执行发布脚本</p>
-<pre><code class="language-plain_text">npm run publish-to-npm
+<pre class="line-numbers"><code class="language-plain_text">npm run publish-to-npm
 </code></pre>
 <h2><a id="%E5%9C%A8%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%BB%93%E5%BA%93%E4%B8%AD%E8%B0%83%E7%94%A8" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>在小程序仓库中调用</h2>
 <p>升级安装npm包</p>
-<pre><code class="language-plain_text">npm install document-player-miniprogram --registry  https://registry.npmjs.org/
+<pre class="line-numbers"><code class="language-plain_text">npm install document-player-miniprogram --registry  https://registry.npmjs.org/
 
 </code></pre>
 <p>构建npm即可</p>

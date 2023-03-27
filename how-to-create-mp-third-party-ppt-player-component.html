@@ -44,6 +44,8 @@
         
         <li id=""><a target="_blank" href="https://edu.bili-tech.com">课堂</a></li>
         
+        <li id=""><a target="_self" href="course-schedule.html">课程更新表</a></li>
+        
         </ul>
 
         <ul class="right" id="search-wrap">
@@ -74,6 +76,8 @@
         <li><a target="_self" href="archives.html">归档</a></li>
         
         <li><a target="_blank" href="https://edu.bili-tech.com">课堂</a></li>
+        
+        <li><a target="_self" href="course-schedule.html">课程更新表</a></li>
         
 
     <li><label>Categories</label></li>
@@ -123,10 +127,10 @@
 <span id="more"></span><!-- more -->
 <h2><a id="%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>准备工作</h2>
 <p>安装小程序第三方命令行工具, 官方提供了命令行工具，用于快速初始化一个项目。执行如下安装命令：</p>
-<pre><code class="language-plain_text">npm install -g @wechat-miniprogram/miniprogram-cli
+<pre class="line-numbers"><code class="language-plain_text">npm install -g @wechat-miniprogram/miniprogram-cli
 </code></pre>
 <p>创建一个空目录，在目录中执行初始化第三方自定义组件示例项目命令。</p>
-<pre><code class="language-plain_text"># 创建空目录
+<pre class="line-numbers"><code class="language-plain_text"># 创建空目录
 mkdir document-player-miniprogram
 
 # 进入目录
@@ -137,7 +141,7 @@ miniprogram init --type custom-component
 </code></pre>
 <h2><a id="%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>目录结构</h2>
 <p>以下为文档播放器目录结构:</p>
-<pre><code class="language-plain_text">|--miniprogram_dev // 开发环境构建目录
+<pre class="line-numbers"><code class="language-plain_text">|--miniprogram_dev // 开发环境构建目录
 |--miniprogram_dist // 生产环境构建目录
 |--src // 源码
 |   |--assets // 静态资源
@@ -154,16 +158,16 @@ miniprogram init --type custom-component
 </code></pre>
 <h2><a id="%E5%BC%80%E5%8F%91" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>开发</h2>
 <p>根据官方文档，安装依赖</p>
-<pre><code class="language-plain_text">npm install
+<pre class="line-numbers"><code class="language-plain_text">npm install
 </code></pre>
 <p>启动监听</p>
-<pre><code class="language-plain_text">npm run watch
+<pre class="line-numbers"><code class="language-plain_text">npm run watch
 </code></pre>
 <p>接下来我们就可以正式进入开发自己的自定义组件了。</p>
 <h2><a id="%E7%9B%B8%E5%85%B3%E7%89%B9%E6%80%A7" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>相关特性</h2>
 <h3><a id="%E6%92%AD%E6%94%BE%E7%B1%BB%E5%9E%8B%E9%80%89%E6%8B%A9" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>播放类型选择</h3>
 <p>根据传入参数imageData的长度是否存在来判断播放器加载图片的模式：</p>
-<pre><code class="language-plain_text">      if (this.properties.imageData.length) {
+<pre class="line-numbers"><code class="language-plain_text">      if (this.properties.imageData.length) {
         this._initNoEncryptData()
       } else {
         this._initEncryptData()
@@ -171,7 +175,7 @@ miniprogram init --type custom-component
 </code></pre>
 <h3><a id="%E9%9D%9E%E5%8A%A0%E5%AF%86%E6%92%AD%E6%94%BE" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>非加密播放</h3>
 <p>非加密播放时采用imageData数据构造imageList数据，并传入isEncrypted：false</p>
-<pre><code class="language-plain_text">      const list = []
+<pre class="line-numbers"><code class="language-plain_text">      const list = []
       for (let i = 0; i &lt; this.properties.imageData.length; i++) {
         const img = {
           src: this.properties.imageData[i],
@@ -188,26 +192,26 @@ miniprogram init --type custom-component
 </code></pre>
 <h3><a id="%E5%8A%A0%E5%AF%86%E6%92%AD%E6%94%BE" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>加密播放</h3>
 <p>加密播放时，imageUrlPrefix参数生效，并构造imageList，传入isEncrypted：true</p>
-<pre><code class="language-plain_text">      this.setData({
+<pre class="line-numbers"><code class="language-plain_text">      this.setData({
         imageList: list,
         isEncrypted: true
       })
 </code></pre>
 <h3><a id="%E5%8A%A0%E8%BD%BD%E5%9B%BE%E7%89%87" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>加载图片</h3>
 <p>调用goto方法，传入加载page</p>
-<pre><code class="language-plain_text">      this.goto({page: 1})
+<pre class="line-numbers"><code class="language-plain_text">      this.goto({page: 1})
 
 </code></pre>
 <p>根据load参数判断图片是否预加载完成</p>
-<pre><code class="language-plain_text">        if (!newActiveImg.load) {
+<pre class="line-numbers"><code class="language-plain_text">        if (!newActiveImg.load) {
           this._loadImage(newActiveImg)
         }
 </code></pre>
 <p>由于图片资源加载需要过程，前端未加载图片暂时有了一个placehold图片。</p>
-<pre><code class="language-plain_text">        &lt;scale-image ... src=&quot;{{ item.load ? item.base64 : './assets/loading.gif' }}&quot; ... &gt;&lt;/scale-image&gt;
+<pre class="line-numbers"><code class="language-plain_text">        &lt;scale-image ... src=&quot;{{ item.load ? item.base64 : './assets/loading.gif' }}&quot; ... &gt;&lt;/scale-image&gt;
 </code></pre>
 <p>根据图片资源先调用wx.request 方式预加载图片内容</p>
-<pre><code class="language-plain_text">      wx.request({
+<pre class="line-numbers"><code class="language-plain_text">      wx.request({
         url: image.src,
         responseType: 'arraybuffer',
         success: result =&gt; {
@@ -215,7 +219,7 @@ miniprogram init --type custom-component
         }
 </code></pre>
 <p>加密模式，采用加密算法解密图片内容并转换base64</p>
-<pre><code class="language-plain_text">          if (that.data.isEncrypted) {
+<pre class="line-numbers"><code class="language-plain_text">          if (that.data.isEncrypted) {
             const key = that._str2uint32(this.properties.encryptKey)
             const iv = that._str2uint32(this.properties.encryptIv)
             const readerBuffer = new Uint8Array(data)
@@ -231,7 +235,7 @@ miniprogram init --type custom-component
           } 
 </code></pre>
 <p>非加密模式，内容函数直接转换base64</p>
-<pre><code class="language-plain_text">            image.base64 = 'data:image/png;base64,' + wx.arrayBufferToBase64(data)
+<pre class="line-numbers"><code class="language-plain_text">            image.base64 = 'data:image/png;base64,' + wx.arrayBufferToBase64(data)
             image.load = true
             const currentIndex = image.page - 1
             that.setData({
@@ -240,10 +244,10 @@ miniprogram init --type custom-component
 </code></pre>
 <h2><a id="%E5%8F%91%E5%B8%83%E7%BB%84%E4%BB%B6" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>发布组件</h2>
 <p>生成build内容</p>
-<pre><code class="language-plain_text">npm run build
+<pre class="line-numbers"><code class="language-plain_text">npm run build
 </code></pre>
 <p>设置版本号</p>
-<pre><code class="language-plain_text">package.json
+<pre class="line-numbers"><code class="language-plain_text">package.json
 {
   &quot;name&quot;: &quot;document-player-miniprogram&quot;,
   &quot;version&quot;: &quot;1.3.7&quot;, // 修改
@@ -251,11 +255,11 @@ miniprogram init --type custom-component
   &quot;main&quot;: &quot;miniprogram_dist/index.js&quot;,
 </code></pre>
 <p>执行发布脚本</p>
-<pre><code class="language-plain_text">npm run publish-to-npm
+<pre class="line-numbers"><code class="language-plain_text">npm run publish-to-npm
 </code></pre>
 <h2><a id="%E5%9C%A8%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%BB%93%E5%BA%93%E4%B8%AD%E8%B0%83%E7%94%A8" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>在小程序仓库中调用</h2>
 <p>升级安装npm包</p>
-<pre><code class="language-plain_text">npm install document-player-miniprogram --registry  https://registry.npmjs.org/
+<pre class="line-numbers"><code class="language-plain_text">npm install document-player-miniprogram --registry  https://registry.npmjs.org/
 
 </code></pre>
 <p>构建npm即可</p>

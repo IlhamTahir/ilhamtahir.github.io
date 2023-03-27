@@ -44,6 +44,8 @@
         
         <li id=""><a target="_blank" href="https://edu.bili-tech.com">课堂</a></li>
         
+        <li id=""><a target="_self" href="course-schedule.html">课程更新表</a></li>
+        
         </ul>
 
         <ul class="right" id="search-wrap">
@@ -74,6 +76,8 @@
         <li><a target="_self" href="archives.html">归档</a></li>
         
         <li><a target="_blank" href="https://edu.bili-tech.com">课堂</a></li>
+        
+        <li><a target="_self" href="course-schedule.html">课程更新表</a></li>
         
 
     <li><label>Categories</label></li>
@@ -133,7 +137,7 @@
 <h2><a id="%E5%B0%81%E8%A3%85" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>封装</h2>
 <p>在面向对象编程中我们将一组相关的变量和函数组合成一个单元。 我们称该单元为<strong>对象</strong>。我们将这些变量称为<strong>属性</strong>，函数称为<strong>方法</strong>。</p>
 <p>比如，我们来想一下一个汽车。</p>
-<pre><code class="language-mermaid">classDiagram
+<pre class="line-numbers"><code class="language-mermaid">classDiagram
 class Car{
     trademark
     model
@@ -146,7 +150,7 @@ class Car{
 <p>因此，在面向对象的编程中，您将相关的变量和对它们进行操作的函数分组为对象。<br />
 这个我们叫为<strong>封装</strong>。</p>
 <p>首先我们看以下代码：</p>
-<pre><code class="language-js">let baseSalary = 30000
+<pre class="line-numbers"><code class="language-js">let baseSalary = 30000
 let overtime = 10
 let rate = 20
 
@@ -156,7 +160,7 @@ function getWage(baseSalary, overtime, rate) {
 
 </code></pre>
 <p>我们用面向对象解决这个问题</p>
-<pre><code class="language-js">
+<pre class="line-numbers"><code class="language-js">
 let employee = {
     baseSalary: 30000,
     overtime: 10,
@@ -190,7 +194,7 @@ employee.getWage()
 <h2><a id="%E7%BB%A7%E6%89%BF" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>继承</h2>
 <p>面向对象第三个核心概念是继承。继承让我们消除冗余代码的一种机制。<br />
 我们看看一个例子。我们想象一下，老师、学生、校长、家长。</p>
-<pre><code class="language-mermaid">classDiagram
+<pre class="line-numbers"><code class="language-mermaid">classDiagram
 class Teacher{
     firstName
     lastName
@@ -225,7 +229,7 @@ class Parent {
 </code></pre>
 <p>这些对象都有几个相同点。我们都需要有姓氏、名字、说嗨、再见等等。<br />
 我们没有必要在每一个对象里面都要重新定义这些属性和方法，我们可以定义一个通用的对象名称叫做<code>Person</code>。</p>
-<pre><code class="language-mermaid">classDiagram
+<pre class="line-numbers"><code class="language-mermaid">classDiagram
 class Person {
     firstName
     lastName
@@ -234,7 +238,7 @@ class Person {
 }
 </code></pre>
 <p>让老师、学生、校长、家长对象去继承这个Person对象。</p>
-<pre><code class="language-mermaid">classDiagram
+<pre class="line-numbers"><code class="language-mermaid">classDiagram
 class Person {
     firstName
     lastName
@@ -267,7 +271,7 @@ Person &lt;|-- Parent
 <h2><a id="%E5%A4%9A%E6%80%81" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>多态</h2>
 <p>多态的意思就是多种形态。多态帮你避免使用雍长的ifelse预计和switch语句。<br />
 让我们回到刚刚几个方法我们每个人都有getFullname。但每个对象都有不同的叫法：李老师、依同学、艾校长以及高家长，按照面向过程，你可能会通过switch来判断并使用对应的方法，例如：</p>
-<pre><code class="language-ts">switch(person.getType()) {
+<pre class="line-numbers"><code class="language-ts">switch(person.getType()) {
 
     case: 'teacher': console.log('李老师');break;
     case: 'student': console.log('依同学');break;
@@ -276,7 +280,7 @@ Person &lt;|-- Parent
 
 }
 </code></pre>
-<pre><code class="language-ts">
+<pre class="line-numbers"><code class="language-ts">
 class Person {
     officalName() {
         console.log('依力');
@@ -295,7 +299,7 @@ class Student extends Person {
     }
 }
 </code></pre>
-<pre><code class="language-ts">
+<pre class="line-numbers"><code class="language-ts">
 const student = new Student();
 
 const teacher = new Teacher();
