@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  MapStruct学习笔记（1）：对象映射就这么简单 - 程序猿依力的博客
+  Jekins环境搭建 - 程序猿依力的博客
   
   </title>
-  <meta name="keywords" content="Java开发,MapStruct,对象转换" />
-  <meta name="description" content="Java开发,MapStruct,对象转换" />
+  
+  
   <link href="atom.xml" rel="alternate" title="程序猿依力的博客" type="application/atom+xml">
     <link rel="stylesheet" href="asset/css/foundation.min.css" />
     <link rel="stylesheet" href="asset/css/docs.css" />
@@ -100,10 +100,10 @@
       <div class="markdown-body article-wrap">
        <div class="article">
           
-          <h1>MapStruct学习笔记（1）：对象映射就这么简单</h1>
+          <h1>Jekins环境搭建</h1>
      
         <div class="read-more clearfix">
-          <span class="date">2022/12/21 00:08 AM</span>
+          <span class="date">2024/11/16 14:18 PM</span>
 
           
            
@@ -118,163 +118,62 @@
       </div><!-- article -->
 
       <div class="article-content">
-      <p>当我们定义多层架构时，我们往往会针对不同层级定义不同的实体对象。如DTO、Entity（DO）以及VO。从而不同对象之间的转换就成为了头等大事。<br />
-在充血模型中，我们一般会把转换方法放入具体对象中。</p>
-<pre class="line-numbers"><code class="language-mermaid">classDiagram
-class Dto {
-    Vo toVo()
-    Entity toEntity()
-}
-class Vo {
-    Dto toDto()
-}
-class Entity {
-    Dto toDto()
-}
-</code></pre>
+      <p>为了配合内部项目自动化部署和集成，我准备搭建一套Jekins。Jekins提供了非常丰富的安装形式：<a href="https://www.jenkins.io/doc/book/installing/">https://www.jenkins.io/doc/book/installing</a>，为了部署方便，我们准备采用Docker方式安装。</p>
 <span id="more"></span><!-- more -->
-<p>然而也有部分情况下我们会专门引入转换类来负责对象之间的转换。</p>
-<pre class="line-numbers"><code class="language-mermaid">classDiagram
-class Dto
-class Vo
-class Entity
-class Converter {
-    Vo toVo(Dto dto)
-    Dto toDto(Entity entity)
-    Entity toEntity(Dto dto)
-}
-</code></pre>
-<p>针对每一个实体模型，我们都要单独形成<code>Convertor</code>类来负责对象之间的转换关系（数据映射）。所以一个好用的动态映射框架对我们提高代码效率有很大的益处。</p>
-<h2><a id="mapstruct" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>MapStruct</h2>
-<p>根据我的Java开发经验，我非常喜欢 MapStruct ，它不仅仅可以帮我快速做好对象之间的映射关系、还可以把一些过程数据构造、格式转换等操作一并处理，让我更关注于业务代码本身。<br />
-MapStruct 是用于生成类型安全的映射Bean类的Java注释处理器。</p>
-<p>与动态映射框架对比，MapStruct 能够带来以下优势：</p>
-<ul>
-<li>通过使用普通方法调用而不是反射所以执行速度更快</li>
-<li>编译时类型的安全性：只能映射限定的属性，不会超边界映射对象</li>
-<li>如果映射有问题会在在构建阶段指出明确的错误</li>
-</ul>
-<p>就如我所说，这个 MapStruct 能做到的事情非常多，对我来说目前为止我只用到了它的皮毛。所以我想通过一个系列，从头开始学习整理 MapStruct 的官方文档。</p>
-<h2><a id="%E5%AE%89%E8%A3%85" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>安装</h2>
-<p>凡事从安装开始！</p>
-<p>MapStruct是基于JSR 269的Java注释处理器，因此可以在命令行构建（Javac，Ant，Maven等）以及IDE内部使用。</p>
-<h3><a id="maven" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven</h3>
-<p>如果你的构建工具是Maven，你需要在你的pom.xml文件使用MapStruct依赖，如下：</p>
-<pre class="line-numbers"><code class="language-xml">...
-&lt;properties&gt;
-    &lt;org.mapstruct.version&gt;1.4.2.Final&lt;/org.mapstruct.version&gt;
-&lt;/properties&gt;
-...
-&lt;dependencies&gt;
-    &lt;dependency&gt;
-        &lt;groupId&gt;org.mapstruct&lt;/groupId&gt;
-        &lt;artifactId&gt;mapstruct&lt;/artifactId&gt;
-        &lt;version&gt;${org.mapstruct.version}&lt;/version&gt;
-    &lt;/dependency&gt;
-&lt;/dependencies&gt;
-...
-&lt;build&gt;
-    &lt;plugins&gt;
-        &lt;plugin&gt;
-            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-            &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
-            &lt;version&gt;3.8.1&lt;/version&gt;
-            &lt;configuration&gt;
-                &lt;source&gt;1.8&lt;/source&gt;
-                &lt;target&gt;1.8&lt;/target&gt;
-                &lt;annotationProcessorPaths&gt;
-                    &lt;path&gt;
-                        &lt;groupId&gt;org.mapstruct&lt;/groupId&gt;
-                        &lt;artifactId&gt;mapstruct-processor&lt;/artifactId&gt;
-                        &lt;version&gt;${org.mapstruct.version}&lt;/version&gt;
-                    &lt;/path&gt;
-                &lt;/annotationProcessorPaths&gt;
-            &lt;/configuration&gt;
-        &lt;/plugin&gt;
-    &lt;/plugins&gt;
-&lt;/build&gt;
-...
-</code></pre>
-<h3><a id="grandle" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Grandle</h3>
-<p>将以下内容添加到你的gradle构建文件中：</p>
-<pre class="line-numbers"><code class="language-groovy">...
-plugins {
-    ...
-    id &quot;com.diffplug.eclipse.apt&quot; version &quot;3.26.0&quot; // Only for Eclipse
-}
-
-dependencies {
-    ...
-    implementation &quot;org.mapstruct:mapstruct:${mapstructVersion}&quot;
-    annotationProcessor &quot;org.mapstruct:mapstruct-processor:${mapstructVersion}&quot;
-
-    // If you are using mapstruct in test code
-    testAnnotationProcessor &quot;org.mapstruct:mapstruct-processor:${mapstructVersion}&quot;
-}
-...
-</code></pre>
-<h2><a id="%E5%AE%9A%E4%B9%89mapper" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>定义 Mapper</h2>
-<p>我们来定义一个最基础的Mapper吧。</p>
-<pre class="line-numbers"><code class="language-java">@Mapper
-public ixnterface CarMapper {
-
-    @Mapping(source = &quot;make&quot;, target = &quot;manufacturer&quot;)
-    @Mapping(source = &quot;numberOfSeats&quot;, target = &quot;seatCount&quot;)
-    CarDto carToCarDto(Car car);
-
-    @Mapping(source = &quot;name&quot;, target = &quot;fullName&quot;)
-    PersonDto personToPersonDto(Person person);
-}
+<h2><a id="docker%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Docker环境准备</h2>
+<p>这个我应该讲过，请参考<a href="/how-to-setup-a-docker-enviroment-with-ubuntu">服务器准备Docker环境</a>这一篇文章。</p>
+<h2><a id="%E5%88%9B%E5%BB%BAjekins%E4%B8%93%E6%9C%89%E7%BD%91%E7%BB%9C" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>创建Jekins专有网络</h2>
+<pre class="line-numbers"><code class="language-bash">docker network create jenkins
 
 </code></pre>
-<p>构建后，MapStruct自动给我们生成映射的实现类</p>
-<pre class="line-numbers"><code class="language-java">// GENERATED CODE
-public class CarMapperImpl implements CarMapper {
-
-    @Override
-    public CarDto carToCarDto(Car car) {
-        if ( car == null ) {
-            return null;
-        }
-
-        CarDto carDto = new CarDto();
-
-        if ( car.getFeatures() != null ) {
-            carDto.setFeatures( new ArrayList&lt;String&gt;( car.getFeatures() ) );
-        }
-        carDto.setManufacturer( car.getMake() );
-        carDto.setSeatCount( car.getNumberOfSeats() );
-        carDto.setDriver( personToPersonDto( car.getDriver() ) );
-        carDto.setPrice( String.valueOf( car.getPrice() ) );
-        if ( car.getCategory() != null ) {
-            carDto.setCategory( car.getCategory().toString() );
-        }
-        carDto.setEngine( engineToEngineDto( car.getEngine() ) );
-
-        return carDto;
-    }
-
-    @Override
-    public PersonDto personToPersonDto(Person person) {
-        //...
-    }
-
-    private EngineDto engineToEngineDto(Engine engine) {
-        if ( engine == null ) {
-            return null;
-        }
-
-        EngineDto engineDto = new EngineDto();
-
-        engineDto.setHorsePower(engine.getHorsePower());
-        engineDto.setFuel(engine.getFuel());
-
-        return engineDto;
-    }
-}
+<h2><a id="docker-dind%E5%AE%B9%E5%99%A8%E8%BF%90%E8%A1%8C" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>docker:dind容器运行</h2>
+<p>在 Jenkins 节点中执行 Docker 命令，可以通过运行 docker:dind（Docker-in-Docker）镜像来设置一个环境。以下是运行 docker:dind 容器的命令：</p>
+<pre class="line-numbers"><code class="language-bash">
+docker run \
+  --name jenkins-docker \
+  --rm \
+  --detach \
+  --privileged \
+  --network jenkins \
+  --network-alias docker \
+  --env DOCKER_TLS_CERTDIR=/certs \
+  --volume jenkins-docker-certs:/certs/client \
+  --volume jenkins-data:/var/jenkins_home \
+  --publish 2376:2376 \
+  docker:dind \
+  --storage-driver overlay2
+  
 </code></pre>
-<p>是不是很神奇？这是官方最快捷的案例。其实要弄懂MapStruct的映射规则以及编写机制，我们可以大大提高日常开发过程中的对象转换效率。让我们的代码更加简洁更关注于业务模型的设计工作当中，告别这些繁琐的转换类的编写。</p>
-<p>今天就带大家看到这里。咱们下期继续深入学习MapStruct。</p>
+<pre class="line-numbers"><code class="language-bash">
+FROM jenkins/jenkins:2.479.1-jdk17
+USER root
+RUN apt-get update &amp;&amp; apt-get install -y lsb-release
+RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
+https://download.docker.com/linux/debian/gpg
+RUN echo &quot;deb [arch=$(dpkg --print-architecture) \
+signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
+https://download.docker.com/linux/debian \
+$(lsb_release -cs) stable&quot; &gt; /etc/apt/sources.list.d/docker.list
+RUN apt-get update &amp;&amp; apt-get install -y docker-ce-cli
+USER jenkins
+RUN jenkins-plugin-cli --plugins &quot;blueocean docker-workflow&quot;
+</code></pre>
+<pre class="line-numbers"><code class="language-bash">docker build -t myjenkins-blueocean:2.479.1-1 .
+</code></pre>
+<pre class="line-numbers"><code class="language-plain_text">docker run \
+--name jenkins-blueocean \
+--restart=on-failure \
+--detach \
+--network jenkins \
+--env DOCKER_HOST=tcp://docker:2376 \
+--env DOCKER_CERT_PATH=/certs/client \
+--env DOCKER_TLS_VERIFY=1 \
+--publish 8080:8080 \
+--publish 50000:50000 \
+--volume jenkins-data:/var/jenkins_home \
+--volume jenkins-docker-certs:/certs/client:ro \
+myjenkins-blueocean:2.479.1-1
+</code></pre>
 
 
     
@@ -285,16 +184,13 @@ public class CarMapperImpl implements CarMapper {
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
       
-          <a href="17317363573574.html" 
-          title="Previous Post: 服务器准备Docker环境">&laquo; 服务器准备Docker环境</a>
-      
         </p>
         </div>
         <div class="large-6 columns">
       <p class="text-right" style="padding:15px 0px;">
       
-          <a  href="frontend-oop.html" 
-          title="Next Post: 前端开发不得不知道的编程范式：面向对象">前端开发不得不知道的编程范式：面向对象 &raquo;</a>
+          <a  href="17317363573574.html" 
+          title="Next Post: 服务器准备Docker环境">服务器准备Docker环境 &raquo;</a>
       
       </p>
         </div>
@@ -503,7 +399,7 @@ div.code-toolbar > .toolbar > .toolbar-item > span:focus {
   color: inherit;
   text-decoration: none;
 }
-</style><script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script><script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script><script>!function(){if("undefined"!=typeof Prism&&"undefined"!=typeof document){var e=[],t={},n=function(){};Prism.plugins.toolbar={};var a=Prism.plugins.toolbar.registerButton=function(n,a){var r;r="function"==typeof a?a:function(e){var t;return"function"==typeof a.onClick?((t=document.createElement("button")).type="button",t.addEventListener("click",(function(){a.onClick.call(this,e)}))):"string"==typeof a.url?(t=document.createElement("a")).href=a.url:t=document.createElement("span"),a.className&&t.classList.add(a.className),t.textContent=a.text,t},n in t?console.warn('There is a button with the key "'+n+'" registered already.'):e.push(t[n]=r)},r=Prism.plugins.toolbar.hook=function(a){var r=a.element.parentNode;var l=a.element.classList;if(l.contains('language-mermaid') || l.contains('language-echarts') || l.contains('language-plantuml')){return;} if(r&&/pre/i.test(r.nodeName)&&!r.parentNode.classList.contains("code-toolbar")){var o=document.createElement("div");o.classList.add("code-toolbar"),r.parentNode.insertBefore(o,r),o.appendChild(r);var i=document.createElement("div");i.classList.add("toolbar");var l=e,d=function(e){for(;e;){var t=e.getAttribute("data-toolbar-order");if(null!=t)return(t=t.trim()).length?t.split(/\s*,\s*/g):[];e=e.parentElement}}(a.element);d&&(l=d.map((function(e){return t[e]||n}))),l.forEach((function(e){var t=e(a);if(t){var n=document.createElement("div");n.classList.add("toolbar-item"),n.appendChild(t),i.appendChild(n)}})),o.appendChild(i)}};a("label",(function(e){var t=e.element.parentNode;if(t&&/pre/i.test(t.nodeName)&&t.hasAttribute("data-label")){var n,a,r=t.getAttribute("data-label");try{a=document.querySelector("template#"+r)}catch(e){}return a?n=a.content:(t.hasAttribute("data-url")?(n=document.createElement("a")).href=t.getAttribute("data-url"):n=document.createElement("span"),n.textContent=r),n}})),Prism.hooks.add("complete",r)}}();</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.css"><script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script><style>div.code-toolbar > .toolbar > .toolbar-item > a, div.code-toolbar > .toolbar > .toolbar-item > button, div.code-toolbar > .toolbar > .toolbar-item > span {padding: 4px .5em; background: #f5f2f0; background: rgba(224, 224, 224, 0.4);}</style><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" /><script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script><script>!function(){function clearTmpElement(){for(var e=document.body.childNodes,t=0;t<e.length;t++){var n=e[t];n.id&&n.id.includes("mweb-chart-ele")&&document.body.removeChild(n)}}function drawMermaid(e,t){var n=e+"-0";clearTmpElement();var a=document.createElement("div");a.style.display="none",a.id=n,a.className="mweb_tmp_ele_class",document.body.appendChild(a);try{ setTimeout(function(){mermaid.render(n,t).then(( { svg, fun }) => {  var e0 = document.getElementById(e);e0.innerHTML = '<div>'+ svg + '</div>';});  },0); }catch(e){}}function drawECharts(eleIID,txt){var ele=document.getElementById(eleIID);try{eval(txt);var myoption=option;myoption.animation=!1,void 0!==myoption.width?ele.style.width=myoption.width+10+"px":ele.style.width="100%",void 0!==myoption.height?ele.style.height=myoption.height+10+"px":ele.style.height="350px";var myChart=echarts.init(ele);myChart.setOption(myoption)}catch(e){}}function drawInlineMath(e,t){var n=document.getElementById(e),a=MathJax.getMetricsFor(n);a.display=!1,MathJax.tex2chtmlPromise(t,a).then(function(e){n.appendChild(e)}).catch(function(e){n.innerText=e.message})}function drawBlockMath(e,t){var n=document.getElementById(e);n.className="";var a=MathJax.getMetricsFor(n);a.display=!0,MathJax.tex2chtmlPromise(t,a).then(function(e){n.appendChild(e)}).catch(function(e){n.innerText=e.message})}var init=function(){var e=[];"undefined"!=typeof mermaid&&e.push(["code.language-mermaid",drawMermaid,!0]),"undefined"!=typeof echarts&&e.push(["code.language-echarts",drawECharts,!0]);for(var t=window.mweb_render_charts_ele_gl_number,n=0;n<e.length;n++)for(var a=e[n][0],i=e[n][1],r=e[n][2],d=document.querySelectorAll(a),o=0;o<d.length;o++){var l=d[o],m=l.innerText||l.textContent,c=r?"div":"span",s=document.createElement(c),h="mweb-chart-ele-"+t;if(t++,r){var u=l.parentElement;u.hasAttribute("data-sourcepos")&&s.setAttribute("data-sourcepos",u.getAttribute("data-sourcepos")),s.innerHTML="<"+c+' class="mweb-charts" id="'+h+'"></'+c+">",u.parentNode.replaceChild(s,u)}else s.id=h,l.parentNode.replaceChild(s,l);window.mweb_render_charts_ele_gl_number=t,i(h,m)}};document.addEventListener("DOMContentLoaded",function(e){window.mweb_render_all_charts=init,window.mweb_render_charts_ele_gl_number=0,"undefined"!=typeof mermaid&&mermaid.initialize({startOnLoad:!0}),init()})}();</script>
+</style><script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script><script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script><script>!function(){if("undefined"!=typeof Prism&&"undefined"!=typeof document){var e=[],t={},n=function(){};Prism.plugins.toolbar={};var a=Prism.plugins.toolbar.registerButton=function(n,a){var r;r="function"==typeof a?a:function(e){var t;return"function"==typeof a.onClick?((t=document.createElement("button")).type="button",t.addEventListener("click",(function(){a.onClick.call(this,e)}))):"string"==typeof a.url?(t=document.createElement("a")).href=a.url:t=document.createElement("span"),a.className&&t.classList.add(a.className),t.textContent=a.text,t},n in t?console.warn('There is a button with the key "'+n+'" registered already.'):e.push(t[n]=r)},r=Prism.plugins.toolbar.hook=function(a){var r=a.element.parentNode;var l=a.element.classList;if(l.contains('language-mermaid') || l.contains('language-echarts') || l.contains('language-plantuml')){return;} if(r&&/pre/i.test(r.nodeName)&&!r.parentNode.classList.contains("code-toolbar")){var o=document.createElement("div");o.classList.add("code-toolbar"),r.parentNode.insertBefore(o,r),o.appendChild(r);var i=document.createElement("div");i.classList.add("toolbar");var l=e,d=function(e){for(;e;){var t=e.getAttribute("data-toolbar-order");if(null!=t)return(t=t.trim()).length?t.split(/\s*,\s*/g):[];e=e.parentElement}}(a.element);d&&(l=d.map((function(e){return t[e]||n}))),l.forEach((function(e){var t=e(a);if(t){var n=document.createElement("div");n.classList.add("toolbar-item"),n.appendChild(t),i.appendChild(n)}})),o.appendChild(i)}};a("label",(function(e){var t=e.element.parentNode;if(t&&/pre/i.test(t.nodeName)&&t.hasAttribute("data-label")){var n,a,r=t.getAttribute("data-label");try{a=document.querySelector("template#"+r)}catch(e){}return a?n=a.content:(t.hasAttribute("data-url")?(n=document.createElement("a")).href=t.getAttribute("data-url"):n=document.createElement("span"),n.textContent=r),n}})),Prism.hooks.add("complete",r)}}();</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.css"><script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script><style>div.code-toolbar > .toolbar > .toolbar-item > a, div.code-toolbar > .toolbar > .toolbar-item > button, div.code-toolbar > .toolbar > .toolbar-item > span {padding: 4px .5em; background: #f5f2f0; background: rgba(224, 224, 224, 0.4);}</style>
 
 <style type="text/css">
 figure{margin: 0;padding: 0;}

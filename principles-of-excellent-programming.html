@@ -44,8 +44,6 @@
         
         <li id=""><a target="_blank" href="https://edu.bili-tech.com">课堂</a></li>
         
-        <li id=""><a target="_self" href="course-schedule.html">课程更新表</a></li>
-        
         </ul>
 
         <ul class="right" id="search-wrap">
@@ -77,8 +75,6 @@
         
         <li><a target="_blank" href="https://edu.bili-tech.com">课堂</a></li>
         
-        <li><a target="_self" href="course-schedule.html">课程更新表</a></li>
-        
 
     <li><label>Categories</label></li>
 
@@ -107,7 +103,7 @@
           <h1>优秀程序设计的原则</h1>
      
         <div class="read-more clearfix">
-          <span class="date">2021/01/18 00:12 上午</span>
+          <span class="date">2021/01/18 00:12 AM</span>
 
           
            
@@ -251,6 +247,18 @@
 	      
 		      
 			      <li class="post">
+			        <a href="jekins-huan-jing-da-jianwei-le.html">Jekins环境搭建</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17317363573574.html">服务器准备Docker环境</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
 			        <a href="mapstruct-learning-1.html">MapStruct学习笔记（1）：对象映射就这么简单</a>
 			      </li>
 		     
@@ -268,16 +276,8 @@
 		     
 		  
 		      
-			      <li class="post">
-			        <a href="long-parameter-list.html">过长参数列（Long Parameter List）</a>
-			      </li>
-		     
 		  
 		      
-			      <li class="post">
-			        <a href="principles-of-excellent-programming.html">优秀程序设计的原则</a>
-			      </li>
-		     
 		  
 		      
 		   
@@ -302,22 +302,89 @@ Theme used <a target="_blank" href="http://github.com">GitHub CSS</a>.</p>
       </div>
     </div>
 
+<style>.mweb-charts{background:#fff;}
+body{ box-sizing: border-box;
+    margin: 0 auto;}
+@media print{
+    pre, code, pre code {
+     overflow: visible !important;
+     white-space: pre-wrap !important;       /* css-3 */
+     white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+     white-space: -pre-wrap !important;      /* Opera 4-6 */
+     white-space: -o-pre-wrap !important;    /* Opera 7 */
+     word-wrap: break-word !important;       /* Internet Explorer 5.5+ */
+    }
+    html,body{margin:0;padding:4px;}
+}
 
 
-  
 
+div.code-toolbar {
+  position: relative;
+}
 
+div.code-toolbar > .toolbar {
+  position: absolute;
+  z-index: 10;
+  top: .3em;
+  right: .2em;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0;
+}
 
+div.code-toolbar:hover > .toolbar {
+  opacity: 1;
+}
 
+/* Separate line b/c rules are thrown out if selector is invalid.
+   IE11 and old Edge versions don't support :focus-within. */
+div.code-toolbar:focus-within > .toolbar {
+  opacity: 1;
+}
 
+div.code-toolbar > .toolbar > .toolbar-item {
+  display: inline-block;
+}
 
+div.code-toolbar > .toolbar > .toolbar-item > a {
+  cursor: pointer;
+}
 
+div.code-toolbar > .toolbar > .toolbar-item > button {
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  overflow: visible;
+  padding: 0;
+  -webkit-user-select: none; /* for button */
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
 
+div.code-toolbar > .toolbar > .toolbar-item > a,
+div.code-toolbar > .toolbar > .toolbar-item > button,
+div.code-toolbar > .toolbar > .toolbar-item > span {
+  color: inherit;
+  font-size: .8em;
+  padding: 4px .5em;
+  background: #f5f2f0;
+  background: rgba(224, 224, 224, 0.4);
+  box-shadow: 0 2px 0 0 rgba(0,0,0,0.2);
+  border-radius: .5em;
+}
 
-
-
-
-
+div.code-toolbar > .toolbar > .toolbar-item > a:hover,
+div.code-toolbar > .toolbar > .toolbar-item > a:focus,
+div.code-toolbar > .toolbar > .toolbar-item > button:hover,
+div.code-toolbar > .toolbar > .toolbar-item > button:focus,
+div.code-toolbar > .toolbar > .toolbar-item > span:hover,
+div.code-toolbar > .toolbar > .toolbar-item > span:focus {
+  color: inherit;
+  text-decoration: none;
+}
+</style>
 
 <style type="text/css">
 figure{margin: 0;padding: 0;}

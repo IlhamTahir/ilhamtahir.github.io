@@ -4,13 +4,153 @@
   <title><![CDATA[程序猿依力的博客]]></title>
   <link href="http://ilhamtahir.com/atom.xml" rel="self"/>
   <link href="http://ilhamtahir.com/"/>
-  <updated>2023-08-21T15:02:11+08:00</updated>
+  <updated>2024-11-17T10:11:20+08:00</updated>
   <id>http://ilhamtahir.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[Jekins环境搭建]]></title>
+    <link href="http://ilhamtahir.com/jekins-huan-jing-da-jianwei-le.html"/>
+    <updated>2024-11-16T14:18:01+08:00</updated>
+    <id>http://ilhamtahir.com/jekins-huan-jing-da-jianwei-le.html</id>
+    <content type="html"><![CDATA[
+<p>为了配合内部项目自动化部署和集成，我准备搭建一套Jekins。Jekins提供了非常丰富的安装形式：<a href="https://www.jenkins.io/doc/book/installing/">https://www.jenkins.io/doc/book/installing</a>，为了部署方便，我们准备采用Docker方式安装。</p>
+<span id="more"></span><!-- more -->
+<h2><a id="docker%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Docker环境准备</h2>
+<p>这个我应该讲过，请参考<a href="/how-to-setup-a-docker-enviroment-with-ubuntu">服务器准备Docker环境</a>这一篇文章。</p>
+<h2><a id="%E5%88%9B%E5%BB%BAjekins%E4%B8%93%E6%9C%89%E7%BD%91%E7%BB%9C" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>创建Jekins专有网络</h2>
+<pre class="line-numbers"><code class="language-bash">docker network create jenkins
+
+</code></pre>
+<h2><a id="docker-dind%E5%AE%B9%E5%99%A8%E8%BF%90%E8%A1%8C" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>docker:dind容器运行</h2>
+<p>在 Jenkins 节点中执行 Docker 命令，可以通过运行 docker:dind（Docker-in-Docker）镜像来设置一个环境。以下是运行 docker:dind 容器的命令：</p>
+<pre class="line-numbers"><code class="language-bash">
+docker run \
+  --name jenkins-docker \
+  --rm \
+  --detach \
+  --privileged \
+  --network jenkins \
+  --network-alias docker \
+  --env DOCKER_TLS_CERTDIR=/certs \
+  --volume jenkins-docker-certs:/certs/client \
+  --volume jenkins-data:/var/jenkins_home \
+  --publish 2376:2376 \
+  docker:dind \
+  --storage-driver overlay2
+  
+</code></pre>
+<pre class="line-numbers"><code class="language-bash">
+FROM jenkins/jenkins:2.479.1-jdk17
+USER root
+RUN apt-get update &amp;&amp; apt-get install -y lsb-release
+RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
+https://download.docker.com/linux/debian/gpg
+RUN echo &quot;deb [arch=$(dpkg --print-architecture) \
+signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
+https://download.docker.com/linux/debian \
+$(lsb_release -cs) stable&quot; &gt; /etc/apt/sources.list.d/docker.list
+RUN apt-get update &amp;&amp; apt-get install -y docker-ce-cli
+USER jenkins
+RUN jenkins-plugin-cli --plugins &quot;blueocean docker-workflow&quot;
+</code></pre>
+<pre class="line-numbers"><code class="language-bash">docker build -t myjenkins-blueocean:2.479.1-1 .
+</code></pre>
+<pre class="line-numbers"><code class="language-plain_text">docker run \
+--name jenkins-blueocean \
+--restart=on-failure \
+--detach \
+--network jenkins \
+--env DOCKER_HOST=tcp://docker:2376 \
+--env DOCKER_CERT_PATH=/certs/client \
+--env DOCKER_TLS_VERIFY=1 \
+--publish 8080:8080 \
+--publish 50000:50000 \
+--volume jenkins-data:/var/jenkins_home \
+--volume jenkins-docker-certs:/certs/client:ro \
+myjenkins-blueocean:2.479.1-1
+</code></pre>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[服务器准备Docker环境]]></title>
+    <link href="http://ilhamtahir.com/17317363573574.html"/>
+    <updated>2024-11-16T13:52:37+08:00</updated>
+    <id>http://ilhamtahir.com/17317363573574.html</id>
+    <content type="html"><![CDATA[
+<h2><a id="%E6%9C%8D%E5%8A%A1%E7%8E%AF%E5%A2%83" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>服务环境</h2>
+<p>腾讯轻量云服务：<br />
+CPU - 2核 内存 - 4GBCPU性能免费升级<br />
+系统盘 - SSD云硬盘 60GB<br />
+流量包 - 1000GB/月（带宽：6Mbps）<br />
+操作系统-Ubuntu Server 22.04 LTS 64bit</p>
+<h2><a id="%E7%A7%BB%E9%99%A4%E8%80%81%E7%89%88%E6%9C%AC%E7%9A%84docker%E7%9B%B8%E5%85%B3%E5%A5%97%E4%BB%B6%EF%BC%88%E5%A6%82%E6%9E%9C%E5%AE%89%E8%A3%85%E8%BF%87%EF%BC%89" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>移除老版本的Docker相关套件（如果安装过）</h2>
+<p>运行命令：</p>
+<pre class="line-numbers"><code class="language-bash">for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+</code></pre>
+<span id="more"></span><!-- more -->
+<h2><a id="%E9%85%8D%E7%BD%AEdocker%E6%BA%90" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>配置Docker源</h2>
+<ol>
+<li>增加Docker's 的官方GPG key</li>
+</ol>
+<pre class="line-numbers"><code class="language-bash">sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+</code></pre>
+<ol start="2">
+<li>添加docker源</li>
+</ol>
+<pre class="line-numbers"><code class="language-bash">echo \
+  &quot;deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release &amp;&amp; echo &quot;$VERSION_CODENAME&quot;) stable&quot; | \
+  sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null  
+</code></pre>
+<ol start="3">
+<li>更新依赖</li>
+</ol>
+<pre class="line-numbers"><code class="language-bash">sudo apt-get update
+</code></pre>
+<h2><a id="%E5%AE%89%E8%A3%85docker%E5%A5%97%E4%BB%B6" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>安装docker套件</h2>
+<pre class="line-numbers"><code class="language-bash">sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+</code></pre>
+<h2><a id="%E5%88%87%E6%8D%A2%E5%9B%BD%E5%86%85docker%E9%95%9C%E5%83%8F%E6%BA%90%EF%BC%88%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%EF%BC%89" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>切换国内Docker镜像源（国内服务）</h2>
+<ol>
+<li>创建daemon.json文件(默认路径：<code>/etc/docker/daemon.json</code>)</li>
+</ol>
+<pre class="line-numbers"><code class="language-bash">nano /etc/docker/daemon.json
+</code></pre>
+<ol start="2">
+<li>增加我们的国内镜像源地址：</li>
+</ol>
+<p><strong>注意：<a href="https://gist.github.com/y0ngb1n/7e8f16af3242c7815e7ca2f0833d3ea6">点击这里</a>可以提前查看可用镜像源</strong></p>
+<pre class="line-numbers"><code class="language-plain_text">{
+    &quot;registry-mirrors&quot;: [
+   &quot;https://mirror.ccs.tencentyun.com&quot;
+    ]
+}
+</code></pre>
+<ol start="2">
+<li>重启Docker服务，使<code>daemon.json</code>生效</li>
+</ol>
+<pre class="line-numbers"><code class="language-bash">systemctl daemon-reload
+systemctl restart docker
+</code></pre>
+<h2><a id="%E9%AA%8C%E8%AF%81docker%E7%8E%AF%E5%A2%83%E6%98%AF%E5%90%A6%E5%87%86%E5%A4%87%E5%AE%8C%E6%88%90" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>验证Docker环境是否准备完成</h2>
+<pre class="line-numbers"><code class="language-bash">
+ sudo docker run hello-world
+
+</code></pre>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[MapStruct学习笔记（1）：对象映射就这么简单]]></title>
